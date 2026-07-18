@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INGLY · Pannello di gestione</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--bg:#0a0d18;--card:#12162a;--ink:#eef1fb;--soft:#9aa3c7;--line:rgba(140,160,220,.18);--blue:#3b7de0;--laser:#f5d94e;--ok:#3ecf8e;--warn:#ff8a3c;--r:14px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:radial-gradient(ellipse at 50% 0%,#131a33,#0a0d18) fixed;color:var(--ink);line-height:1.5;padding-bottom:120px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+/* ===== Layout con sidebar (stile Medusa/Stripe) ===== */
+body.app{padding-bottom:0}
+.shell{display:flex;min-height:100vh}
+.side{width:236px;flex:0 0 236px;background:#0b0e1c;border-right:1px solid var(--line);padding:18px 12px;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;gap:2px}
+.side .brand{display:flex;align-items:center;gap:10px;padding:6px 10px 16px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.side .brand img{width:34px;height:34px}
+.side .brand b{font-size:15px;font-style:italic}
+.side .brand span{display:block;font-size:10.5px;color:var(--soft);font-style:normal;letter-spacing:.08em;text-transform:uppercase}
+.navitem{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:9px;font-size:13.5px;font-weight:500;color:var(--ink);cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:inherit}
+.navitem:hover{background:rgba(140,160,220,.08)}
+.navitem.on{background:var(--blue);color:#fff;font-weight:600}
+.navitem .ic{width:20px;text-align:center;font-size:15px}
+.navsep{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);padding:14px 12px 5px;font-weight:700}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{position:sticky;top:0;z-index:6;background:rgba(11,14,28,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:14px 26px;display:flex;align-items:center;gap:14px}
+.topbar h2{font-size:17px;font-style:italic;flex:1}
+.topbar .pchip{font-size:12px;color:var(--soft);background:var(--card);border:1px solid var(--line);padding:5px 12px;border-radius:100px}
+.content{padding:24px 26px;max-width:960px;width:100%;margin:0 auto;flex:1}
+.side .side-cta{margin-top:auto;padding-top:14px;border-top:1px solid var(--line)}
+.menu-btn{display:none}
+@media(max-width:820px){
+  .side{position:fixed;left:0;top:0;z-index:30;transform:translateX(-100%);transition:.3s}
+  .side.open{transform:none;box-shadow:0 0 0 100vmax rgba(0,0,0,.5)}
+  .menu-btn{display:inline-flex}
+}
+header{padding:26px 0 10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+header img{width:52px;height:52px}
+header h1{font-size:22px;font-style:italic}
+header p{color:var(--soft);font-size:13px;width:100%}
+.tabs{display:none}
+.tab{font-size:14px;font-weight:600;font-style:italic;padding:10px 18px;border-radius:100px;border:1.5px solid var(--line);background:none;color:var(--ink);cursor:pointer}
+.tab.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.panel{display:none}.panel.on{display:block;animation:f .4s}
+@keyframes f{from{opacity:0;transform:translateY(10px)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.card h3{font-size:15px;font-style:italic;margin-bottom:14px;color:var(--laser)}
+label{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);margin:12px 0 5px;font-weight:600}
+input,textarea,select{width:100%;background:#0d1124;border:1.5px solid var(--line);border-radius:10px;padding:11px 14px;color:var(--ink);font-size:14px;font-family:inherit;outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--blue)}
+textarea{resize:vertical;min-height:64px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 16px}
+.grid4{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:0 16px}
+@media(max-width:760px){.grid2,.grid3,.grid4{grid-template-columns:1fr}}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;border:none;border-radius:100px;padding:11px 22px;font-size:14px;font-weight:600;font-style:italic;cursor:pointer;font-family:inherit}
+.btn:hover{filter:brightness(1.15)}
+.btn.ghost{background:none;border:1.5px solid var(--line);color:var(--ink)}
+.btn.warn{background:#7a2b2b}
+.btn.ok{background:#1f7a55}
+.prod{border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px;background:#0d1124}
+.prod summary{cursor:pointer;font-weight:600;display:flex;align-items:center;gap:10px;list-style:none}
+.prod summary::-webkit-details-marker{display:none}
+.prod summary .pid{font-size:11px;background:var(--card);border:1px solid var(--line);padding:2px 9px;border-radius:100px;color:var(--soft)}
+.prod summary .em{font-size:20px}
+.prod summary .pr{margin-left:auto;color:var(--laser);font-style:italic}
+.chks{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
+.chks label{display:flex;align-items:center;gap:6px;margin:0;text-transform:none;letter-spacing:0;font-size:13px;color:var(--ink);cursor:pointer}
+.chks input{width:auto}
+.drop{border:2px dashed var(--line);border-radius:var(--r);padding:34px;text-align:center;color:var(--soft);transition:.3s;cursor:pointer}
+.drop.over{border-color:var(--laser);color:var(--laser)}
+.drop img{max-width:180px;max-height:180px;border-radius:10px;margin:12px auto 0;display:block}
+.savebar{position:fixed;left:0;right:0;bottom:0;background:rgba(10,13,24,.92);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding:14px 0;z-index:10}
+.savebar .wrap{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.savebar .hint{font-size:12.5px;color:var(--soft);margin-left:auto}
+.note{background:rgba(59,125,224,.12);border:1px solid rgba(59,125,224,.4);border-radius:10px;padding:12px 16px;font-size:13.5px;margin:10px 0}
+.note.y{background:rgba(245,217,78,.08);border-color:rgba(245,217,78,.35)}
+.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-80px);background:#1f7a55;color:#fff;padding:12px 24px;border-radius:100px;font-weight:600;transition:.4s;z-index:20}
+.toast.on{transform:translateX(-50%) translateY(0)}
+.steps{font-size:13.5px;color:var(--soft)}
+.steps b{color:var(--ink)}
+a{color:var(--blue)}
+.del{margin-top:12px}
+.step-row{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.step-row:last-child{border-bottom:0}
+.step-ic{width:20px;flex:0 0 20px;text-align:center}
+.step-row.wait{opacity:.45}
+.step-row.run .step-ic{animation:spin2 1s linear infinite}
+.step-row.err{color:#ff9a9a}
+.step-row.ok .step-ic{color:var(--ok)}
+.step-note{color:var(--soft);font-size:12.5px;display:block}
+@keyframes spin2{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body class="app">
+<div class="shell">
+  <aside class="side" id="sidebar">
+    <div class="brand">
+      <img src="assets/images/logo.png" alt="INGLY" onerror="this.style.display='none'">
+      <div><b>INGLY</b><span>Control Center</span></div>
+    </div>
+    <nav id="nav"></nav>
+    <div class="side-cta">
+      <button class="btn ok" id="sidePublish" style="width:100%;justify-content:center">🚀 Pubblica</button>
+      <div id="sidePend" style="font-size:11.5px;color:var(--soft);text-align:center;margin-top:8px"></div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <button class="btn ghost menu-btn" id="menuBtn" style="padding:8px 12px">☰</button>
+      <h2 id="pageTitle">Prodotti</h2>
+      <span class="pchip" id="repoChip">…</span>
+    </div>
+    <div class="content">
+      <div class="note y" id="repoRow" style="display:none">
+        <label style="margin-top:0">Indirizzo del tuo repository GitHub</label>
+        <input id="repoUrl" value="https://github.com/inglyum/Sito-ingly">
+        <div style="font-size:12.5px;color:var(--soft);margin-top:7px">📍 File del sito rilevati in: <b id="baseInfo" style="color:var(--laser)">…</b></div>
+      </div>
+
+  <div class="tabs">
+    <button class="tab on" data-p="prodotti">🛒 Prodotti</button>
+    <button class="tab" data-p="foto">🖼 Foto prodotti</button>
+    <button class="tab" data-p="testi">✏️ Testi</button>
+    <button class="tab" data-p="contatti">📞 Contatti & Social</button>
+    <button class="tab" data-p="categorie">🗂 Categorie</button>
+    <button class="tab" data-p="hero">⭐ Hero (Home)</button>
+    <button class="tab" data-p="seo">🔍 SEO</button>
+    <button class="tab" data-p="pubblica">🚀 Pubblica & Anteprima</button>
+    <button class="tab" data-p="stato">📊 Stato</button>
+    <button class="tab" data-p="guida">❓ Come si usa</button>
+  </div>
+
+  <!-- PRODOTTI -->
+  <section class="panel on" id="p-prodotti">
+    <div class="note">Apri un prodotto per modificarlo. <b>+ Aggiungi prodotto</b> in fondo. Le modifiche restano qui finché non scarichi <b>catalog.js</b> e lo carichi su GitHub.</div>
+    <input id="prodSearch" placeholder="🔎 Cerca prodotto per nome o numero…" style="margin-bottom:12px">
+    <div id="prodList"></div>
+    <button class="btn ok" id="addProd">+ Aggiungi prodotto</button>
+  </section>
+
+  <!-- FOTO -->
+  <section class="panel" id="p-foto">
+    <div class="card">
+      <h3>Prepara la foto di un prodotto</h3>
+      <label>1 · Scegli il prodotto</label>
+      <select id="fotoProd"></select>
+      <label>2 · Posizione nella galleria</label>
+      <select id="fotoSlot">
+        <option value="0">Foto principale (quella che si vede ovunque)</option>
+        <option value="2">Foto aggiuntiva 2</option>
+        <option value="3">Foto aggiuntiva 3</option>
+        <option value="4">Foto aggiuntiva 4</option>
+      </select>
+      <div id="fotoGal" style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"></div>
+      <label>3 · Trascina qui la foto (o clicca)</label>
+      <div class="drop" id="drop">Trascina l'immagine qui<br><small>JPG o PNG — verrà ottimizzata e rinominata automaticamente</small></div>
+      <input type="file" id="fotoFile" accept="image/*" hidden>
+      <div id="fotoOut" style="display:none">
+        <div class="note" style="margin-top:14px">✔ Pronta! Scarica il file (già col nome giusto e compresso) e caricalo nella cartella <b>img/</b> del sito.</div>
+        <button class="btn ok" id="fotoPub">🚀 Pubblica la foto sul sito</button>
+        <button class="btn" id="fotoDl">⬇ Scarica <span id="fotoName"></span></button>
+        <a class="btn ghost" id="fotoUp" target="_blank" rel="noopener">↗ Oppure caricala a mano su GitHub</a>
+        <div id="fotoLog" style="font-size:13px;color:var(--soft);margin-top:8px"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTI -->
+  <section class="panel" id="p-testi">
+    <div class="card"><h3>Testi principali del sito (italiano + inglese)</h3><div id="txtList"></div></div>
+  </section>
+
+  <!-- CONTATTI -->
+  <section class="panel" id="p-contatti">
+    <div class="card"><h3>Contatti</h3>
+      <div class="grid2">
+        <div><label>Email</label><input data-cfg="email"></div>
+        <div><label>Link WhatsApp (wa.me/39…)</label><input data-cfg="whatsapp"></div>
+        <div><label>Riga copyright</label><input data-cfg="copyright"></div>
+        <div><label>Riga legale (P.IVA…)</label><input data-cfg="legale"></div>
+      </div>
+    </div>
+    <div class="card"><h3>📨 Moduli — dove ricevi le richieste</h3>
+      <p style="font-size:13.5px;color:var(--soft)">Crea un modulo gratis su <b style="color:var(--ink)">formspree.io</b> (registrati con la tua email → New Form → copia l'ID, tipo <code>xbljknqw</code>). Incollalo qui e le richieste dal sito ti arriveranno per email. Senza ID, i moduli avvisano l'utente di scriverti su WhatsApp.</p>
+      <div class="grid2">
+        <div><label>ID Formspree — modulo Preventivo</label><input data-mod="formspreePreventivo" placeholder="es. xbljknqw"></div>
+        <div><label>ID Formspree — Newsletter</label><input data-mod="formspreeNewsletter" placeholder="es. mzbqwrle"></div>
+      </div>
+    </div>
+    <div class="card"><h3>Social — incolla i link ai tuoi profili</h3>
+      <div class="grid2" id="socList"></div>
+    </div>
+    <div class="card"><h3>Numeri mostrati nel sito</h3>
+      <div class="grid4">
+        <div><label>Pezzi prodotti</label><input type="number" data-st="pezzi"></div>
+        <div><label>Clienti business</label><input type="number" data-st="clienti"></div>
+        <div><label>Materiali</label><input type="number" data-st="materiali"></div>
+        <div><label>Puntualità %</label><input type="number" data-st="puntualita"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEO -->
+  <section class="panel" id="p-seo">
+    <div class="note">Questi campi decidono <b>come appari su Google</b> e quando condividi il link su WhatsApp/Facebook. I prodotti generano già da soli i propri dati strutturati (prezzo, recensioni, disponibilità).</div>
+    <div class="card"><h3>🔍 Come appari su Google</h3>
+      <label>Titolo del sito (max ~60 caratteri)</label><input data-seo="titolo">
+      <label>Descrizione (max ~155 caratteri)</label><textarea data-seo="descrizione"></textarea>
+      <label>Parole chiave</label><input data-seo="keywords">
+      <div id="serp" style="margin-top:16px;background:#fff;border-radius:10px;padding:14px 16px">
+        <div style="color:#202124;font-size:12px">www.inglydesign.it</div>
+        <div id="serpT" style="color:#1a0dab;font-size:19px;margin:2px 0"></div>
+        <div id="serpD" style="color:#4d5156;font-size:13.5px;line-height:1.5"></div>
+      </div>
+    </div>
+    <div class="card"><h3>📍 Dati dell'attività (scheda locale Google)</h3>
+      <div class="grid4">
+        <div><label>Nome azienda</label><input data-seo="azienda"></div>
+        <div><label>Città</label><input data-seo="citta"></div>
+        <div><label>Regione</label><input data-seo="regione"></div>
+        <div><label>Telefono</label><input data-seo="telefono"></div>
+      </div>
+      <label>Dominio del sito</label><input data-seo="dominio">
+    </div>
+  </section>
+
+  <!-- HERO BUILDER -->
+  <section class="panel" id="p-hero">
+    <div class="note">Le 3 card in evidenza sulla Home ora leggono i dati <b>direttamente dal catalogo</b>: nome, prezzo, materiale, icona e foto si aggiornano da soli quando modifichi il prodotto. Qui scegli <b>quali</b> prodotti mostrare.</div>
+    <div class="card"><h3>⭐ Prodotti in evidenza sulla Home</h3>
+      <div class="grid3" id="heroSelects"></div>
+      <div id="heroPrev" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px"></div>
+    </div>
+  </section>
+
+  <!-- CATEGORIE -->
+  <section class="panel" id="p-categorie">
+    <div class="note y">Rinomina le categorie, cambia le icone e gestisci le sottocategorie. ⚠️ Se elimini una sottocategoria, i prodotti collegati vengono riassegnati automaticamente.</div>
+    <div id="catList"></div>
+  </section>
+
+  <!-- IMPOSTAZIONI -->
+  <section class="panel" id="p-settings">
+    <div class="card"><h3>⚙ Connessione al repository</h3>
+      <p style="font-size:13.5px;color:var(--soft)">Se cambi o rinomini il repository, aggiorna qui: niente è scritto nel codice.</p>
+      <div class="grid3">
+        <div><label>Owner (utente/organizzazione)</label><input id="setOwner" placeholder="inglyum"></div>
+        <div><label>Repository</label><input id="setRepo" placeholder="ingly-website"></div>
+        <div><label>Branch</label><input id="setBranch" placeholder="main"></div>
+      </div>
+      <label>Token GitHub (Contents: Read and write)</label>
+      <input id="setTok" type="password" placeholder="github_pat_…">
+      <div class="chks"><label><input type="checkbox" id="setRemember"> Ricorda su questo computer</label></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px">
+        <button class="btn" id="setTest">🔌 Test connessione</button>
+        <button class="btn ok" id="setSave">💾 Salva impostazioni</button>
+      </div>
+      <div id="setOut" class="steps" style="margin-top:10px"></div>
+    </div>
+    <div class="card"><h3>📍 Percorsi rilevati</h3>
+      <div class="steps" id="setPaths">…</div>
+    </div>
+  </section>
+
+  <!-- STATO -->
+  <section class="panel" id="p-stato">
+    <div class="card"><h3>📊 Stato del sistema</h3>
+      <div class="steps">Versione dati attiva: <b id="stVer" style="color:var(--laser)">—</b></div>
+      <button class="btn" id="stCheck" style="margin-top:12px">🔄 Controlla repository & deploy</button>
+      <div id="stOut" class="steps" style="margin-top:10px"></div>
+    </div>
+    <div class="card"><h3>🕓 Cronologia modifiche & Rollback</h3>
+      <p style="font-size:13px;color:var(--soft)">Ogni pubblicazione è salvata per sempre. Puoi riportare il sito a qualsiasi versione precedente.</p>
+      <button class="btn ghost" id="histBtn">↻ Carica cronologia</button>
+      <div id="histList" class="steps" style="margin-top:10px"></div>
+    </div>
+    <div class="card"><h3>🧾 Log errori</h3><div id="errLog" class="steps">Nessun errore ✔</div></div>
+  </section>
+
+  <!-- PUBBLICA -->
+  <section class="panel" id="p-pubblica">
+    <div class="card"><h3>🚀 Pubblicazione con un click (facoltativa)</h3>
+      <p style="font-size:13.5px;color:var(--soft)">Con un <b style="color:var(--ink)">token GitHub</b> il pulsante qui sotto carica da solo i file modificati sul sito: niente più scarica-e-trascina. Come crearlo: GitHub → foto profilo → <i>Settings → Developer settings → Personal access tokens → Fine-grained → Generate new token</i> → Repository access: <b style="color:var(--ink)">solo questo repository</b> → Permissions → <b style="color:var(--ink)">Contents: Read and write</b> → scadenza a tua scelta.</p>
+      <label>Token GitHub</label><input id="ghTok" type="password" placeholder="github_pat_…">
+      <div class="chks"><label><input type="checkbox" id="ghRemember"> Ricorda il token su questo computer</label></div>
+      <button class="btn ghost" id="ghVerify" style="margin-top:12px">🔌 Verifica collegamento</button>
+      <span id="ghVerifyOut" style="font-size:13px;color:var(--soft);margin-left:10px"></span>
+      <button class="btn ok" id="pubBtn" style="margin-top:14px">🚀 Pubblica le modifiche sul sito</button>
+      <div id="pubLog" style="font-size:13px;color:var(--soft);margin-top:10px"></div>
+      <div id="pubSteps" style="margin-top:14px;display:none"></div>
+    </div>
+    <div class="card"><h3>👁 Anteprima live delle modifiche (prima di pubblicare)</h3>
+      <p style="font-size:13.5px;color:var(--soft)">Mostra il sito vero con i dati che stai modificando, senza toccare quello online.</p>
+      <button class="btn" id="prevBtn">↻ Aggiorna anteprima con le mie modifiche</button>
+      <div id="prevWrap" style="margin-top:14px;display:none;border:1px solid var(--line);border-radius:var(--r);overflow:hidden">
+        <iframe id="prevFrame" style="width:100%;height:70vh;border:0;background:#0a0d18" title="Anteprima"></iframe>
+      </div>
+      <div id="prevNote" class="note y" style="display:none">L'anteprima live funziona quando il pannello è aperto dal sito online (o da un server locale). Aperto come file, usa la pubblicazione o il doppio click su index.html dopo aver sostituito i file.</div>
+    </div>
+  </section>
+
+  <!-- GUIDA -->
+  <section class="panel" id="p-guida">
+    <div class="card"><h3>Come funziona (3 passi)</h3>
+      <ol class="steps" style="padding-left:20px;display:grid;gap:10px">
+        <li><b>Modifica</b> quello che vuoi nelle schede qui sopra (prodotti, testi, contatti). Tutto avviene in sicurezza nel tuo browser: il sito online non cambia ancora.</li>
+        <li><b>Scarica i file aggiornati</b> con i pulsanti nella barra in basso (scarica solo quelli evidenziati come modificati).</li>
+        <li><b>Caricali su GitHub</b> col pulsante «↗ Carica su GitHub»: si apre la pagina giusta, trascini i file scaricati, premi <i>Commit changes</i>. In 1–2 minuti il sito è aggiornato.</li>
+      </ol>
+      <div class="note" style="margin-top:14px">Le <b>foto</b> vanno nella cartella <b>img/</b> (usa la scheda Foto: rinomina e comprime da sola). I file <b>config / i18n / catalog</b> vanno nella cartella <b>data/</b> — il pulsante di caricamento ti porta già lì.</div>
+    </div>
+  </section>
+</div>
+
+</div><!--content--></div><!--main--></div><!--shell-->
+<div class="savebar"><div class="wrap">
+  <button class="btn ok" id="sbPublish">🚀 Pubblica</button>
+  <button class="btn" id="dlProducts">⬇ products.json <span id="modP"></span></button>
+  <button class="btn" id="dlCategories">⬇ categories.json <span id="modG"></span></button>
+  <button class="btn" id="dlConfig">⬇ config.json <span id="modK"></span></button>
+  <button class="btn" id="dlTexts">⬇ texts.json <span id="modT"></span></button>
+  <button class="btn ghost" id="dlVersion">⬇ version.json</button>
+  <a class="btn ok" id="upData" target="_blank" rel="noopener">↗ Carica su GitHub (data/)</a>
+  <span class="hint" id="pendHint">Nessuna modifica in sospeso · <b>Ctrl+S</b> per pubblicare</span>
+</div></div>
+
+<div class="toast" id="toast">Fatto ✔</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const slugify=s=>(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+let I, BASE='';
+
+/* ============ BOOT: trova i dati del sito ovunque siano ============ */
+const DATAF=['config','i18n','socials','catalog'];
+const loadScript = src => new Promise((ok,ko)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=()=>ko(src);document.head.appendChild(s)});
+const CONTENT_KEYS=['MAT_ART','MATN','DIG','TECH','MATERIALS','STEPS','REVIEWS','BIZ','FAQS','PORT','FONTS','MOPT'];
+const MISSING=[];
+async function tryJson(base){
+  const vr=await fetch(base+'data/version.json?t='+Date.now(),{cache:'no-store'});
+  if(!vr.ok) throw 0;
+  const v=(await vr.json()).v;
+  const names=['config','texts','social','products','categories','content'];
+  const KEYS={config:'CONFIG',texts:'D',social:'SOCIALS',products:'P',categories:'CATS'};
+  const res=await Promise.allSettled(names.map(f=>
+    fetch(base+'data/'+f+'.json?v='+v).then(r=>{ if(!r.ok) throw new Error(f); return r.json() })));
+  const I={__v:v};
+  res.forEach((r,i)=>{ const f=names[i];
+    if(r.status==='fulfilled'){ if(f==='content') Object.assign(I,r.value); else I[KEYS[f]]=r.value; }
+    else MISSING.push(f+'.json');
+  });
+  /* i pezzi mancanti li recupero dai file di riserva data/*.js */
+  if(MISSING.length){
+    const stash=window.INGLY; window.INGLY={};
+    for(const f of ['config','i18n','socials','catalog']){ try{ await loadScript(base+'data/'+f+'.js') }catch(e){} }
+    const legacy=window.INGLY||{}; window.INGLY=stash;
+    for(const k of Object.keys(legacy)) if(I[k]===undefined) I[k]=legacy[k];
+  }
+  if(!I.P||!I.CATS||!I.CONFIG||!I.D) throw 0;
+  return I;
+}
+async function boot(){
+  for (const base of ['','repo/']){
+    try{ I=await tryJson(base); window.INGLY=I; BASE=base; initAdmin(); return; }catch(e){}
+    try{ for(const f of DATAF) await loadScript(base+'data/'+f+'.js'); }catch(e){ continue }
+    if (window.INGLY && window.INGLY.CATS && window.INGLY.CONFIG && window.INGLY.D){
+      I = window.INGLY; I.__v=null; BASE = base; initAdmin(); return;
+    }
+  }
+  bootError();
+}
+function bootError(){
+  const sb=document.querySelector('.savebar'); if(sb) sb.style.display='none';
+
+  const rr=document.getElementById('repoRow'); if(rr) rr.style.display='none';
+  document.querySelector('.content').innerHTML = `
+   <header><h1>⚠️ Non trovo i dati del sito</h1></header>
+   <div class="card"><h3>Perché succede</h3>
+   <p style="font-size:14.5px;color:var(--soft)">Questo pannello legge i file del sito dalla cartella <b style="color:var(--ink)">data/</b> che deve stare <b style="color:var(--ink)">accanto</b> a lui. L'ho cercata in <code>data/</code> e in <code>repo/data/</code> senza trovarla.</p>
+   <h3 style="margin-top:18px">Come risolvere</h3>
+   <ol class="steps" style="padding-left:20px;display:grid;gap:8px">
+     <li><b>Sul sito online:</b> carica <code>admin.html</code> nella <b>radice del repository</b>, nello stesso posto dove si trova <code>index.html</code> (accanto alle cartelle <code>assets/</code> e <code>data/</code>). Poi apri <code>…github.io/NOMEREPO/admin.html</code>.</li>
+     <li><b>Sul computer:</b> copia <code>admin.html</code> dentro la cartella estratta del sito (dove c'è <code>index.html</code>) e aprilo da lì — non dalla cartella Download.</li>
+   </ol></div>`;
+}
+addEventListener('DOMContentLoaded', boot);
+
+function initAdmin(){
+const mod = {P:false,G:false,K:false,T:false};
+function flag(k){mod[k]=true;$('mod'+k).textContent='●'}
+let toastT;function toast(m){$('toast').textContent=m;$('toast').classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>$('toast').classList.remove('on'),2400)}
+
+/* ===== Sidebar (stile Medusa/Stripe): costruita dalle sezioni esistenti ===== */
+const NAVGROUPS=[
+  ['Catalogo', [['prodotti','🛒','Prodotti'],['categorie','🗂','Categorie'],['hero','⭐','Hero (Home)'],['foto','🖼','Foto prodotti']]],
+  ['Contenuti',[['testi','✏️','Testi'],['contatti','📞','Contatti & Social'],['seo','🔍','SEO']]],
+  ['Sistema',  [['pubblica','🚀','Pubblica & Anteprima'],['stato','📊','Stato'],['settings','⚙','Impostazioni'],['guida','❓','Come si usa']]]
+];
+const TITLES={settings:'Impostazioni'}; document.querySelectorAll('.tab').forEach(t=>TITLES[t.dataset.p]=t.textContent.replace(/^[^\wÀ-ÿ]+/,'').trim());
+function buildNav(){
+  const nav=$('nav'); nav.innerHTML='';
+  NAVGROUPS.forEach(([grp,items])=>{
+    const s=document.createElement('div'); s.className='navsep'; s.textContent=grp; nav.appendChild(s);
+    items.forEach(([p,ic,label])=>{
+      const b=document.createElement('button'); b.className='navitem'; b.dataset.p=p;
+      b.innerHTML=`<span class="ic">${ic}</span><span>${label}</span>`;
+      b.onclick=()=>selectPage(p);
+      nav.appendChild(b);
+    });
+  });
+}
+function selectPage(p){
+  document.querySelectorAll('.navitem').forEach(x=>x.classList.toggle('on',x.dataset.p===p));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('on'));
+  const panel=$('p-'+p); if(panel)panel.classList.add('on');
+  $('pageTitle').textContent=TITLES[p]||p;
+  $('sidebar').classList.remove('open');
+  document.querySelector('.content').scrollTo?window.scrollTo(0,0):0;
+}
+buildNav();
+$('menuBtn').onclick=()=>$('sidebar').classList.toggle('open');
+selectPage('prodotti');
+
+/* link GitHub */
+const GH={owner:'',repo:'',branch:'main'};
+function loadGH(){
+  /* priorità: 1) impostazioni salvate  2) indirizzo reale del sito  3) valore di ripiego */
+  let saved={}; try{ saved=JSON.parse(localStorage.getItem('ingly_gh')||'{}') }catch(e){}
+  if(saved.owner&&saved.repo){ Object.assign(GH,saved); GH.branch=GH.branch||'main'; return }
+  if(location.hostname.endsWith('github.io')){
+    GH.owner=location.hostname.split('.')[0];
+    const seg=location.pathname.split('/').filter(Boolean);
+    if(seg.length) GH.repo=seg[0];
+  }
+  if(!GH.owner||!GH.repo){
+    const m=($('repoUrl').value||'').match(/github\.com\/([^\/]+)\/([^\/]+)/);
+    if(m){ GH.owner=GH.owner||m[1]; GH.repo=GH.repo||m[2] }
+  }
+  GH.branch=saved.branch||GH.branch||'main';
+}
+function saveGH(){ try{ localStorage.setItem('ingly_gh',JSON.stringify(GH)) }catch(e){} }
+function repoBase(){ return GH.owner&&GH.repo ? 'https://github.com/'+GH.owner+'/'+GH.repo : '' }
+function refreshLinks(){
+  const rc=$('repoChip'); if(rc){ const or=(repoBase().match(/github\.com\/([^\/]+\/[^\/]+)/)||[])[1]; rc.textContent=or?('📦 '+or):'repo?'; rc.style.cursor='pointer'; rc.onclick=()=>{const r=$('repoRow'); r.style.display=r.style.display==='none'?'block':'none'} }
+  $('upData').href=repoBase()+'/upload/'+GH.branch+'/'+BASE+'data';
+  $('fotoUp').href=repoBase()+'/upload/'+GH.branch+'/'+BASE+'img';
+  $('baseInfo').textContent = BASE ? 'cartella "'+BASE+'" (il sito non è ancora alla radice)' : 'radice del repository';
+}
+try{const sv=localStorage.getItem('ingly_repo_url');if(sv)$('repoUrl').value=sv}catch(e){}
+loadGH();
+$('repoUrl').oninput=()=>{try{localStorage.setItem('ingly_repo_url',$('repoUrl').value)}catch(e){};refreshLinks()};refreshLinks();
+
+/* ============ PRODOTTI ============ */
+const CATS_OK = I.CATS.filter(c=>!['custom','materiali','tecnologie'].includes(c.id));
+const MATS = Object.keys(I.MATN).filter(m=>m!=='File');
+const COLLS = [['best','Più venduti'],['new','Novità'],['limited','Limitata'],['season','Stagionale'],['corporate','Corporate']];
+function subOptions(catId, sel){
+  const c=I.CATS.find(x=>x.id===catId);
+  return (c&&c.sub.length?c.sub:[{it:'—',en:'—'}]).map((s,i)=>`<option value="${i}" ${i===sel?'selected':''}>${s.it}</option>`).join('');
+}
+function prodRow(x){
+  return `<details class="prod" data-id="${x.id}">
+    <summary><span class="em">${x.icon}</span> <span class="nm">${x.n.it}</span> <span class="pid">#${x.id}</span>${x.hidden?'<span class="pid" style="color:var(--warn)">nascosto</span>':''}<span class="pr">€${x.price}</span></summary>
+    <div class="grid2">
+      <div><label>Nome (italiano)</label><input data-f="nit" value="${(x.n.it+'').replace(/"/g,'&quot;')}"></div>
+      <div><label>Nome (inglese)</label><input data-f="nen" value="${(x.n.en+'').replace(/"/g,'&quot;')}"></div>
+    </div>
+    <div class="grid4">
+      <div><label>Categoria</label><select data-f="cat">${CATS_OK.map(c=>`<option value="${c.id}" ${c.id===x.cat?'selected':''}>${c.ic} ${c.n.it}</option>`).join('')}</select></div>
+      <div><label>Sottocategoria</label><select data-f="sub">${subOptions(x.cat,x.sub)}</select></div>
+      <div><label>Materiale</label><select data-f="mat">${MATS.map(m=>`<option ${m===x.mat?'selected':''}>${m}</option>`).join('')}</select></div>
+      <div><label>Prezzo €</label><input data-f="price" type="number" step="0.5" value="${x.price}"></div>
+    </div>
+    <div class="grid3">
+      <div><label>Emoji / icona</label><input data-f="icon" value="${x.icon}"></div>
+      <div><label>Giorni di produzione</label><input data-f="prod" type="number" value="${x.prod||3}"></div>
+      <div><label>Etichetta (vuoto = nessuna)</label><input data-f="tag" value="${x.tag||''}"></div>
+    </div>
+    <label>Collezioni</label>
+    <div class="chks">${COLLS.map(c=>`<label><input type="checkbox" data-coll="${c[0]}" ${(x.coll||[]).includes(c[0])?'checked':''}>${c[1]}</label>`).join('')}</div>
+    <label>Visibilità</label>
+    <div class="chks"><label><input type="checkbox" data-vis ${x.hidden?'':'checked'}> Visibile sul sito <span style="color:var(--soft);font-size:12px">(togli la spunta per nasconderlo senza eliminarlo)</span></label></div>
+    <div class="grid2">
+      <div><label>Descrizione (italiano)</label><textarea data-f="dit">${x.desc?x.desc.it:''}</textarea></div>
+      <div><label>Descrizione (inglese)</label><textarea data-f="den">${x.desc?x.desc.en:''}</textarea></div>
+    </div>
+    <button class="btn ghost del" data-dup="${x.id}">⧉ Duplica</button>
+    <button class="btn warn del" data-del="${x.id}">🗑 Elimina questo prodotto</button>
+  </details>`;
+}
+function renderProds(){
+  if(document.getElementById('heroPrev')&&window.__heroReady)renderHeroAdmin();
+  const q=($('prodSearch').value||'').trim().toLowerCase();
+  const list=q?I.P.filter(p=>((p.n.it||'')+' '+(p.n.en||'')+' '+p.id).toLowerCase().includes(q)):I.P;
+  $('prodList').innerHTML=list.map(prodRow).join('')||'<div class="note">Nessun prodotto corrisponde alla ricerca.</div>';
+  fillFotoSel();
+}
+renderProds();
+$('prodSearch').oninput=renderProds;
+
+$('prodList').addEventListener('input',e=>{
+  const box=e.target.closest('.prod');if(!box)return;
+  const x=I.P.find(p=>p.id===+box.dataset.id), f=e.target.dataset.f, v=e.target.value;
+  if(f==='nit'){x.n.it=v;box.querySelector('.nm').textContent=v;x.slug=slugify(v)}
+  if(f==='nen')x.n.en=v;
+  if(f==='cat'){x.cat=v;x.sub=0;box.querySelector('[data-f="sub"]').innerHTML=subOptions(v,0)}
+  if(f==='sub')x.sub=+v;
+  if(f==='mat')x.mat=v;
+  if(f==='price'){x.price=+v||0;box.querySelector('.pr').textContent='€'+x.price}
+  if(f==='icon')x.icon=v;
+  if(f==='prod')x.prod=+v||3;
+  if(f==='tag'){if(v)x.tag=v;else delete x.tag}
+  if(f==='dit'||f==='den'){x.desc=x.desc||{it:'',en:''};x.desc[f==='dit'?'it':'en']=v;if(!x.desc.it&&!x.desc.en)delete x.desc}
+  if(e.target.hasAttribute('data-vis')){ if(e.target.checked) delete x.hidden; else x.hidden=true; renderProds(); }
+  if(e.target.dataset.coll!==undefined){
+    x.coll=x.coll||[];const c=e.target.dataset.coll;
+    if(e.target.checked){if(!x.coll.includes(c))x.coll.push(c)}else x.coll=x.coll.filter(k=>k!==c);
+  }
+  flag('P');
+});
+$('prodList').addEventListener('click',e=>{
+  const dup=e.target.dataset.dup;
+  if(dup){
+    const src=I.P.find(p=>p.id===+dup), id=Math.max(...I.P.map(p=>p.id))+1;
+    const c=JSON.parse(JSON.stringify(src)); c.id=id; c.n.it+=' (copia)'; c.n.en+=' (copy)'; c.slug=slugify(c.n.it);
+    I.P.splice(I.P.indexOf(src)+1,0,c); renderProds(); flag('P'); toast('Prodotto duplicato ⧉'); return;
+  }
+  const del=e.target.dataset.del;if(!del)return;
+  const x=I.P.find(p=>p.id===+del);
+  if(confirm('Eliminare "'+x.n.it+'"?')){I.P.splice(I.P.indexOf(x),1);renderProds();flag('P');toast('Prodotto eliminato')}
+});
+$('addProd').onclick=()=>{
+  const id=Math.max(...I.P.map(p=>p.id))+1;
+  I.P.push({id,cat:CATS_OK[0].id,sub:0,n:{it:'Nuovo prodotto',en:'New product'},slug:'nuovo-prodotto',mat:'Legno',price:19,icon:'✨',rev:12,coll:['new'],prod:3});
+  renderProds();flag('P');
+  const last=$('prodList').lastElementChild;last.open=true;last.scrollIntoView({behavior:'smooth'});
+};
+
+/* ============ FOTO ============ */
+function fillFotoSel(){$('fotoProd').innerHTML=I.P.map(p=>`<option value="${p.id}">${p.icon} ${p.n.it} → img/${p.id}.webp</option>`).join('')}
+const drop=$('drop');let fotoBlob=null,fotoExt='.webp';
+const fotoSlot=()=>+$('fotoSlot').value;
+const fotoFile=()=>$('fotoProd').value+(fotoSlot()?'-'+fotoSlot():'')+fotoExt;
+function renderFotoGal(){
+  const p=I.P.find(x=>x.id===+$('fotoProd').value); if(!p)return;
+  const imgs=[(I.CONFIG.cartellaImmagini||'img/')+p.id+'.webp',...(p.gallery||[])];
+  $('fotoGal').innerHTML=imgs.map((src,i)=>`<div style="width:70px;height:70px;border-radius:10px;border:1px solid var(--line);overflow:hidden;position:relative">
+    <img src="${BASE+src}?t=${Date.now()}" style="width:100%;height:100%;object-fit:cover" onerror="this.parentNode.style.opacity=.3;this.remove()">
+    <span style="position:absolute;left:3px;bottom:2px;font-size:10px;background:rgba(0,0,0,.65);padding:1px 5px;border-radius:8px">${i?i+1:'main'}</span>
+    ${i?`<b data-galdel="${i-1}" title="Togli dalla galleria" style="position:absolute;right:3px;top:0;cursor:pointer;color:var(--warn);font-size:13px">✕</b>`:''}</div>`).join('');
+}
+drop.onclick=()=>$('fotoFile').click();
+['dragover','dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.toggle('over',ev==='dragover')}));
+drop.addEventListener('drop',e=>handleFoto(e.dataTransfer.files[0]));
+$('fotoFile').onchange=e=>handleFoto(e.target.files[0]);
+function handleFoto(file){
+  if(!file||!file.type.startsWith('image/'))return toast('Scegli un\'immagine');
+  const img=new Image();img.onload=()=>{
+    const MAX=1000,k=Math.min(1,MAX/Math.max(img.width,img.height));
+    const cv=document.createElement('canvas');cv.width=img.width*k;cv.height=img.height*k;
+    cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);
+    const emit=b=>{fotoBlob=b;fotoExt=b.type==='image/webp'?'.webp':'.jpg';
+      drop.innerHTML='';const pv=new Image();pv.src=URL.createObjectURL(b);drop.appendChild(pv);
+      const rep=document.createElement('div');rep.style.cssText='margin-top:10px;font-size:12.5px';rep.textContent='Trascina un\'altra foto o clicca per sostituirla';drop.appendChild(rep);
+      $('fotoOut').style.display='block';
+      const pr=I.P.find(p=>p.id===+$('fotoProd').value);
+      $('fotoOut').querySelector('.note').innerHTML='✔ Pronta per <b>«'+(pr?pr.n.it:'?')+'»</b> — pubblicala con un click, o scaricala e mettila in <b>img/</b>. Cambiando prodotto nel menu, la zona si azzera (una foto per prodotto).';
+      $('fotoName').textContent=fotoFile();
+      $('fotoFile').value='';
+      toast('Foto ottimizzata '+fotoExt.toUpperCase().slice(1)+' ('+Math.round(b.size/1024)+' KB)');
+    };
+    cv.toBlob(wb=>{ if(wb&&wb.type==='image/webp') emit(wb); else cv.toBlob(emit,'image/jpeg',.82); },'image/webp',.82);
+  };img.src=URL.createObjectURL(file);
+}
+function resetFotoZone(){
+  fotoBlob=null;
+  drop.innerHTML="Trascina l'immagine qui<br><small>JPG o PNG — verrà ottimizzata e rinominata automaticamente</small>";
+  $('fotoOut').style.display='none';
+  $('fotoLog').textContent='';
+  $('fotoFile').value='';
+  $('fotoName').textContent=fotoFile();
+  renderFotoGal();
+}
+$('fotoProd').onchange=resetFotoZone;
+$('fotoSlot').onchange=resetFotoZone;
+$('fotoDl').onclick=()=>{if(!fotoBlob)return;dl(fotoFile(),fotoBlob)};
+$('fotoGal').addEventListener('click',e=>{
+  const i=e.target.dataset.galdel; if(i===undefined)return;
+  const p=I.P.find(x=>x.id===+$('fotoProd').value);
+  if(!p||!p.gallery||!confirm('Togliere questa foto dalla galleria del prodotto?'))return;
+  p.gallery.splice(+i,1); if(!p.gallery.length) delete p.gallery;
+  renderFotoGal(); flag('P'); toast('Foto rimossa — ricordati di pubblicare 🚀');
+});
+renderFotoGal();
+
+/* ============ TESTI ============ */
+const TXT=[['topline','Barra in alto'],['heroSub','Sottotitolo della home'],['ctaShop','Bottone principale'],['ctaQuote','Bottone secondario'],['abSub','Testo "Chi Siamo"'],['qSub','Testo pagina Preventivo'],['ftDesc','Descrizione nel footer'],['nlSub','Testo newsletter']];
+$('txtList').innerHTML=TXT.map(t=>`<label style="color:var(--laser)">${t[1]}</label>
+  <div class="grid2">
+   <div><label>Italiano</label><textarea data-txt="it:${t[0]}">${I.D.it[t[0]]||''}</textarea></div>
+   <div><label>Inglese</label><textarea data-txt="en:${t[0]}">${I.D.en[t[0]]||''}</textarea></div>
+  </div>`).join('');
+$('txtList').addEventListener('input',e=>{
+  const k=e.target.dataset.txt;if(!k)return;
+  const [lang,key]=k.split(':');I.D[lang][key]=e.target.value;flag('T');
+});
+
+/* ============ CONTATTI & SOCIAL ============ */
+document.querySelectorAll('[data-cfg]').forEach(inp=>{inp.value=I.CONFIG[inp.dataset.cfg]||'';inp.oninput=()=>{I.CONFIG[inp.dataset.cfg]=inp.value;flag('K')}});
+I.CONFIG.moduli=I.CONFIG.moduli||{};
+document.querySelectorAll('[data-mod]').forEach(inp=>{inp.value=I.CONFIG.moduli[inp.dataset.mod]||'';inp.oninput=()=>{I.CONFIG.moduli[inp.dataset.mod]=inp.value.trim();flag('K')}});
+const SOC=['instagram','facebook','tiktok','pinterest','whatsapp','etsy'];
+$('socList').innerHTML=SOC.map(s=>`<div><label>${s}</label><input data-soc="${s}" value="${I.CONFIG.social[s]||''}"></div>`).join('');
+document.querySelectorAll('[data-soc]').forEach(inp=>inp.oninput=()=>{I.CONFIG.social[inp.dataset.soc]=inp.value;flag('K')});
+document.querySelectorAll('[data-st]').forEach(inp=>{inp.value=I.CONFIG.statistiche[inp.dataset.st];inp.oninput=()=>{I.CONFIG.statistiche[inp.dataset.st]=+inp.value||0;flag('K')}});
+
+/* ============ GENERAZIONE FILE ============ */
+function dl(name,content){
+  const b=content instanceof Blob?content:new Blob([content],{type:'text/javascript'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;a.click();
+}
+const js=v=>JSON.stringify(v,null,1);
+function genConfig(){return js(I.CONFIG)}
+function genTexts(){return js(I.D)}
+function genProducts(){return js(I.P)}
+function genCategories(){return js(I.CATS)}
+function genContent(){const o={};CONTENT_KEYS.forEach(k=>o[k]=I[k]);return js(o)}
+function genVersion(){return JSON.stringify({v:Date.now(),updated:new Date().toISOString()})}
+const dlDone=(k)=>{if(k){mod[k]=false;$('mod'+k).textContent=''}};
+$('dlProducts').onclick=()=>{dl('products.json',genProducts());dlDone('P');toast('products.json scaricato — caricalo in data/ INSIEME a version.json')};
+$('dlCategories').onclick=()=>{dl('categories.json',genCategories());dlDone('G');toast('categories.json scaricato — caricalo in data/ INSIEME a version.json')};
+$('dlConfig').onclick=()=>{dl('config.json',genConfig());dlDone('K');toast('config.json scaricato — caricalo in data/ INSIEME a version.json')};
+$('dlTexts').onclick=()=>{dl('texts.json',genTexts());dlDone('T');toast('texts.json scaricato — caricalo in data/ INSIEME a version.json')};
+$('dlVersion').onclick=()=>{dl('version.json',genVersion());toast('version.json scaricato — caricandolo il sito si aggiorna SUBITO')};
+addEventListener('beforeunload',e=>{if(mod.P||mod.G||mod.K||mod.T){e.preventDefault();e.returnValue=''}});
+const tokenVal=()=>{
+  const a=$('ghTok'), b=$('setTok');
+  return (a&&a.value.trim()) || (b&&b.value.trim()) || '';
+};
+const b64=s=>btoa(unescape(encodeURIComponent(s)));
+function ownerRepo(){ return (GH.owner&&GH.repo)?{o:GH.owner,r:GH.repo}:null }
+async function ghPut(path,content,msg,isB64){
+  const or=ownerRepo(); if(!or) throw 'Indirizzo repository non valido';
+  const H={Authorization:'Bearer '+tokenVal(),Accept:'application/vnd.github+json'};
+  const url=`https://api.github.com/repos/${or.o}/${or.r}/contents/${path}`;
+  let sha; const g=await fetch(url+'?ref='+encodeURIComponent(GH.branch),{headers:H});
+  if(g.ok){ sha=(await g.json()).sha }
+  const body={message:msg,content:isB64?content:b64(content),branch:GH.branch};
+  if(sha)body.sha=sha;
+  const p=await fetch(url,{method:'PUT',headers:H,body:JSON.stringify(body)});
+  if(!p.ok){ const e=await p.json().catch(()=>({})); throw ghErr(p.status, e.message) }
+  return p.json().catch(()=>({}));
+}
+function ghErr(status,msg){
+  if(status===401) return 'Token non valido o scaduto — creane uno nuovo (Developer settings → Fine-grained tokens).';
+  if(status===404) return 'Repository non trovato dal token (404). Succede se il repo è stato cancellato/rinominato: crea un NUOVO token selezionando il repository attuale, e controlla l\'indirizzo qui sopra.';
+  if(status===403) return 'Permessi insufficienti o limite API: il token deve avere Contents → Read and write per QUESTO repository.';
+  return msg||('Errore '+status);
+}
+async function verifyLink(){
+  const or=ownerRepo(); if(!or) return {ok:false,msg:'Indirizzo repository non valido'};
+  if(!tokenVal()) return {ok:false,msg:'Inserisci prima il token'};
+  const r=await fetch(`https://api.github.com/repos/${or.o}/${or.r}`,{headers:{Authorization:'Bearer '+tokenVal(),Accept:'application/vnd.github+json'}});
+  if(!r.ok) return {ok:false,msg:ghErr(r.status)};
+  const j=await r.json();
+  if(!(j.permissions&&j.permissions.push)) return {ok:false,msg:'Il token vede il repository ma NON può scrivere: aggiungi il permesso Contents → Read and write.'};
+  return {ok:true,msg:'✅ Collegato a '+j.full_name+' — permessi di scrittura OK. Puoi pubblicare con un click.'};
+}
+const blobB64=b=>new Promise(res=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.readAsDataURL(b)});
+$('fotoPub').onclick=async()=>{
+  if(!fotoBlob){$('fotoLog').textContent='⚠ Prima trascina una foto.';return}
+  if(!tokenVal()){$('fotoLog').innerHTML='⚠ Serve il token: inseriscilo nella scheda <b>🚀 Pubblica & Anteprima</b> (istruzioni lì).';return}
+  const name=fotoFile();
+  const prod=I.P.find(x=>x.id===+$('fotoProd').value);
+  $('fotoPub').disabled=true;$('fotoLog').textContent='Carico '+name+' sul sito…';
+  try{ await ghPut(BASE+'img/'+name, await blobB64(fotoBlob), 'Foto prodotto '+name+' (pannello admin)', true);
+    if(fotoSlot()&&prod){
+      const path=(I.CONFIG.cartellaImmagini||'img/')+name;
+      prod.gallery=prod.gallery||[];
+      if(!prod.gallery.includes(path)) prod.gallery.push(path);
+      await ghPut(BASE+'data/products.json',genProducts(),'Galleria: '+name);
+      await ghPut(BASE+'data/version.json',genVersion(),'Bump versione (galleria)');
+      mod.P=false;$('modP').textContent='';
+    }
+    const done=fotoFile();
+    resetFotoZone();
+    $('fotoLog').innerHTML='✅ <b>'+done+'</b> pubblicata'+(fotoSlot()?' e aggiunta alla galleria':'')+'. Ricarica il sito per vederla.';
+    toast('Foto pubblicata 🚀');
+  }catch(err){ $('fotoLog').textContent='❌ '+err }
+  $('fotoPub').disabled=false;
+};
+
+/* ============ SEO ============ */
+function renderSerp(){
+  const s=I.CONFIG.seo||{};
+  $('serpT').textContent=(s.titolo||'').slice(0,60)||'Titolo del sito';
+  $('serpD').textContent=(s.descrizione||'').slice(0,155)||'Descrizione…';
+}
+I.CONFIG.seo=I.CONFIG.seo||{};
+document.querySelectorAll('[data-seo]').forEach(inp=>{
+  inp.value=I.CONFIG.seo[inp.dataset.seo]||'';
+  inp.oninput=()=>{I.CONFIG.seo[inp.dataset.seo]=inp.value;renderSerp();flag('K')};
+});
+renderSerp();
+
+/* ============ HERO BUILDER ============ */
+function heroIdsAdmin(){
+  const f=(I.CONFIG.heroFeatured||[]).filter(id=>I.P.some(p=>p.id===+id)).map(Number);
+  return [0,1,2].map(i=>f[i]!==undefined?f[i]:(I.P[i]?I.P[i].id:null));
+}
+function renderHeroAdmin(){
+  const ids=heroIdsAdmin();
+  $('heroSelects').innerHTML=ids.map((id,i)=>`<div><label>Card ${i+1}</label>
+    <select data-hero="${i}">${I.P.map(p=>`<option value="${p.id}" ${p.id===id?'selected':''}>${p.icon} ${p.n.it} — €${p.price}</option>`).join('')}</select></div>`).join('');
+  $('heroPrev').innerHTML=ids.map(id=>{
+    const p=I.P.find(x=>x.id===id); if(!p)return '';
+    const bg=(I.MAT_ART[p.mat]||{}).bg||'#222';
+    const c=I.CATS.find(k=>k.id===p.cat);
+    const sub=(I.MATN[p.mat]?I.MATN[p.mat].it:'')+(c&&c.sub[p.sub]?' · '+c.sub[p.sub].it:'');
+    return `<div class="card" style="margin:0;padding:14px">
+      <div style="height:90px;border-radius:10px;background:${bg};display:grid;place-items:center;font-size:34px">${p.icon}</div>
+      <b style="display:block;margin-top:10px;font-size:14px">${p.n.it}</b>
+      <span style="font-size:12px;color:var(--soft)">${sub}</span>
+      <div style="color:var(--laser);font-style:italic;margin-top:4px">da €${p.price}</div></div>`;
+  }).join('');
+}
+$('heroSelects').addEventListener('change',e=>{
+  const i=e.target.dataset.hero; if(i===undefined)return;
+  const ids=heroIdsAdmin(); ids[+i]=+e.target.value;
+  I.CONFIG.heroFeatured=ids;
+  renderHeroAdmin(); flag('K'); toast('Hero aggiornata — ricordati di pubblicare 🚀');
+});
+renderHeroAdmin(); window.__heroReady=true;
+
+/* ============ CATEGORIE ============ */
+function renderCatsAdmin(){
+  $('catList').innerHTML=I.CATS.map((c,ci)=>`<div class="card" data-ci="${ci}">
+    <div class="grid3">
+      <div><label>Icona</label><input data-cf="ic" value="${c.ic||''}"></div>
+      <div><label>Nome (italiano)</label><input data-cf="nit" value="${(c.n.it+'').replace(/"/g,'&quot;')}"></div>
+      <div><label>Nome (inglese)</label><input data-cf="nen" value="${(c.n.en+'').replace(/"/g,'&quot;')}"></div>
+    </div>
+    <label>Sottocategorie</label>
+    <div class="chks">${(c.sub&&c.sub.length)?c.sub.map((s,si)=>`<label style="border:1px solid var(--line);border-radius:100px;padding:6px 12px">${s.it} <b data-subdel="${ci}:${si}" style="cursor:pointer;color:var(--warn)"> ✕</b></label>`).join(''):'<span style="color:var(--soft);font-size:13px">nessuna</span>'}</div>
+    <div class="grid3" style="margin-top:8px">
+      <div><input data-newit placeholder="Nuova sottocategoria (IT)"></div>
+      <div><input data-newen placeholder="New subcategory (EN)"></div>
+      <div><button class="btn ghost" data-subadd="${ci}">+ Aggiungi</button></div>
+    </div>
+  </div>`).join('');
+}
+$('catList').addEventListener('input',e=>{
+  const card=e.target.closest('[data-ci]');if(!card||!e.target.dataset.cf)return;
+  const c=I.CATS[+card.dataset.ci], v=e.target.value;
+  if(e.target.dataset.cf==='ic')c.ic=v;
+  if(e.target.dataset.cf==='nit')c.n.it=v;
+  if(e.target.dataset.cf==='nen')c.n.en=v;
+  flag('G');
+});
+$('catList').addEventListener('click',e=>{
+  const add=e.target.dataset.subadd;
+  if(add!==undefined){
+    const card=e.target.closest('[data-ci]'), c=I.CATS[+add];
+    const it=card.querySelector('[data-newit]').value.trim(), en=card.querySelector('[data-newen]').value.trim();
+    if(!it)return toast('Scrivi il nome della sottocategoria');
+    c.sub=c.sub||[];c.sub.push({it,en:en||it});renderCatsAdmin();flag('G');toast('Sottocategoria aggiunta');return;
+  }
+  const sd=e.target.dataset.subdel;
+  if(sd){
+    const [ci,si]=sd.split(':').map(Number), c=I.CATS[ci];
+    if(!confirm('Eliminare la sottocategoria "'+c.sub[si].it+'"? I prodotti collegati verranno riassegnati.'))return;
+    I.P.forEach(p=>{ if(p.cat===c.id){ if(p.sub===si)p.sub=0; else if(p.sub>si)p.sub--; } });
+    c.sub.splice(si,1);renderCatsAdmin();renderProds();flag('G');flag('P');toast('Sottocategoria eliminata — prodotti riassegnati');
+  }
+});
+renderCatsAdmin();
+
+/* ============ STATO / DASHBOARD ============ */
+function logErr(m){const e=$('errLog');if(e.textContent.startsWith('Nessun'))e.textContent='';const d=document.createElement('div');d.textContent='• '+new Date().toLocaleTimeString()+' — '+m;e.appendChild(d)}
+window.addEventListener('error',ev=>{try{logErr(ev.message)}catch(e){}});
+$('stVer').textContent = I.__v ? (new Date(I.__v).toLocaleString()+'  (v'+I.__v+')') : 'legacy data/*.js — dopo la prima pubblicazione si attiva il versioning';
+$('stCheck').onclick=async()=>{
+  const or=ownerRepo(); if(!or){$('stOut').textContent='Indirizzo repository non valido';return}
+  $('stOut').textContent='Controllo…';
+  const H=tokenVal()?{Authorization:'Bearer '+tokenVal()}:{};
+  const rows=[];
+  try{const r=await (await fetch(`https://api.github.com/repos/${or.o}/${or.r}`,{headers:H})).json();
+    rows.push(r.full_name?('Repository: '+r.full_name+' · ultimo push: '+new Date(r.pushed_at).toLocaleString()):('Repository: '+(r.message||'?')));}catch(e){rows.push('Repository: irraggiungibile')}
+  try{const c=await (await fetch(`https://api.github.com/repos/${or.o}/${or.r}/commits?path=${BASE}data&per_page=1`,{headers:H})).json();
+    if(Array.isArray(c)&&c[0])rows.push('Ultima modifica ai dati: '+new Date(c[0].commit.committer.date).toLocaleString()+' — “'+c[0].commit.message+'”');}catch(e){}
+  if(tokenVal()){
+    try{const p=await (await fetch(`https://api.github.com/repos/${or.o}/${or.r}/pages`,{headers:{...H,Accept:'application/vnd.github+json'}})).json();
+      rows.push('GitHub Pages: '+(p.status||'—')+(p.html_url?(' → '+p.html_url):''));}catch(e){rows.push('GitHub Pages: non leggibile (aggiungi il permesso Pages al token)')}
+  } else rows.push('GitHub Pages: inserisci il token (scheda Pubblica) per lo stato del deploy');
+  rows.push('Cache dati: '+(I.__v?'versioning ATTIVO ✔ — gli aggiornamenti pubblicati sono istantanei':'versioning NON attivo — pubblica una volta per attivarlo'));
+  $('stOut').innerHTML=rows.map(r=>'• '+r).join('<br>');
+};
+$('histBtn').onclick=async()=>{
+  const or=ownerRepo(); if(!or)return;
+  $('histList').textContent='Carico…';
+  const H=tokenVal()?{Authorization:'Bearer '+tokenVal()}:{};
+  try{
+    const c=await (await fetch(`https://api.github.com/repos/${or.o}/${or.r}/commits?path=${BASE}data&per_page=10`,{headers:H})).json();
+    if(!Array.isArray(c)||!c.length){$('histList').textContent='Nessuna modifica trovata (o limite API superato: riprova col token).';return}
+    $('histList').innerHTML=c.map(k=>`<div style="display:flex;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)">
+      <span style="flex:1">${new Date(k.commit.committer.date).toLocaleString()} — ${k.commit.message}</span>
+      <button class="btn ghost" data-rb="${k.sha}" style="padding:6px 14px;font-size:12px">↩ Ripristina</button></div>`).join('');
+  }catch(e){$('histList').textContent='Errore: '+e; logErr('Cronologia: '+e)}
+};
+$('histList').addEventListener('click',async e=>{
+  const sha=e.target.dataset.rb; if(!sha)return;
+  if(!tokenVal()){toast('Per ripristinare serve il token (scheda Pubblica)');return}
+  if(!confirm('Riportare i dati del sito a questa versione? Verrà creata una nuova pubblicazione (nulla va perso).'))return;
+  const or=ownerRepo(); const H={Authorization:'Bearer '+tokenVal(),Accept:'application/vnd.github.raw'};
+  e.target.disabled=true; e.target.textContent='…';
+  try{
+    for(const f of ['config','texts','social','products','categories','content']){
+      const r=await fetch(`https://api.github.com/repos/${or.o}/${or.r}/contents/${BASE}data/${f}.json?ref=${sha}`,{headers:H});
+      if(!r.ok)continue;
+      await ghPut(BASE+'data/'+f+'.json',await r.text(),'Rollback '+f+'.json → '+sha.slice(0,7));
+    }
+    await ghPut(BASE+'data/version.json',genVersion(),'Bump versione (rollback)');
+    e.target.textContent='fatto ✔'; toast('Rollback pubblicato ↩ Ricarica il pannello per vederlo.');
+  }catch(err){logErr('Rollback: '+err); e.target.textContent='errore'}
+});
+
+function initPublish(){
+  const tok=$('ghTok');
+  try{ if(localStorage.getItem('ingly_gh_token')){tok.value=localStorage.getItem('ingly_gh_token');$('ghRemember').checked=true} }catch(e){}
+  tok.oninput=()=>{ try{ if($('ghRemember').checked) localStorage.setItem('ingly_gh_token',tok.value) }catch(e){}; if($('setTok'))$('setTok').value=tok.value };
+  $('ghRemember').onchange=()=>{ try{ $('ghRemember').checked?localStorage.setItem('ingly_gh_token',tok.value):localStorage.removeItem('ingly_gh_token') }catch(e){} };
+
+  /* ===== PUBBLICAZIONE CON DIAGNOSTICA ===== */
+  const STEPS=[
+    ['tok','Token GitHub presente e valido'],
+    ['repo','Repository raggiungibile'],
+    ['perm','Permessi di scrittura confermati'],
+    ['branch','Branch corretto'],
+    ['json','File JSON validi'],
+    ['files','Tutti i file dati presenti sul sito'],
+    ['refs','Nessun riferimento rotto o duplicato'],
+    ['commit','Commit creati su GitHub'],
+    ['cache','Versione aggiornata (cache invalidata)'],
+    ['deploy','Deploy GitHub Pages'],
+    ['live','Sito online allineato']
+  ];
+  function drawSteps(){
+    $('pubSteps').style.display='block';
+    $('pubSteps').innerHTML=STEPS.map(s=>`<div class="step-row wait" id="st-${s[0]}"><span class="step-ic">○</span><span><b>${s[1]}</b><span class="step-note" id="stn-${s[0]}"></span></span></div>`).join('');
+  }
+  function step(id,state,note){
+    const r=$('st-'+id); if(!r)return;
+    r.className='step-row '+state;
+    r.querySelector('.step-ic').textContent = state==='ok'?'✅':state==='err'?'❌':state==='run'?'◍':state==='skip'?'—':'○';
+    if(note!==undefined)$('stn-'+id).innerHTML=note;
+  }
+
+  window.__publishAll=async()=>{
+    drawSteps();
+    $('pubBtn').disabled=true; $('pubLog').textContent='';
+    const fail=(id,msg)=>{ step(id,'err',msg); logErr(msg); $('pubLog').innerHTML='⛔ Pubblicazione interrotta — vedi il passo in rosso.'; $('pubBtn').disabled=false; return false };
+    const or=ownerRepo();
+
+    /* 1 · token */
+    step('tok','run');
+    if(!tokenVal()) return fail('tok','Nessun token inserito nel campo qui sopra.');
+    if(!/^(github_pat_|ghp_)/.test(tokenVal())) step('tok','ok','Formato inatteso, provo comunque…');
+
+    /* 2 · repository */
+    step('repo','run');
+    if(!or) return fail('repo','Indirizzo repository non valido (usa https://github.com/utente/repo).');
+    let info;
+    try{
+      const r=await fetch(`https://api.github.com/repos/${or.o}/${or.r}`,{headers:{Authorization:'Bearer '+tokenVal(),Accept:'application/vnd.github+json'}});
+      if(r.status===401) return fail('tok','Token non valido o scaduto — creane uno nuovo.');
+      if(r.status===404) return fail('repo',`Il token non vede <b>${or.o}/${or.r}</b>. Il token è legato a repository specifici: rigeneralo selezionando questo repo.`);
+      if(!r.ok) return fail('repo','Errore GitHub '+r.status);
+      info=await r.json();
+      step('tok','ok','Autenticazione riuscita');
+      step('repo','ok',info.full_name+' · ultimo push '+new Date(info.pushed_at).toLocaleString());
+    }catch(e){ return fail('repo','Rete non raggiungibile: '+e) }
+
+    /* 3 · permessi */
+    step('perm','run');
+    if(!(info.permissions&&info.permissions.push))
+      return fail('perm','Il token legge ma non può scrivere. Serve <b>Contents: Read and write</b> nei permessi del token.');
+    step('perm','ok','Contents: scrittura consentita');
+
+    /* 4 · branch */
+    step('branch','run');
+    const branch=GH.branch;
+    if(info.default_branch && info.default_branch!==branch)
+      step('branch','ok','Scrivo su <b>'+branch+'</b> ⚠ (il branch principale del repo è <b>'+info.default_branch+'</b> — se il sito non cambia, correggi in Impostazioni)');
+    else step('branch','ok','Scrivo su <b>'+branch+'</b>'+(BASE?' · cartella <b>'+BASE+'</b>':' · radice'));
+
+    /* 5 · JSON validi */
+    step('json','run');
+    const files=[];
+    try{
+      if(mod.P) files.push(['data/products.json',genProducts(),'Aggiorna prodotti (admin)','P']);
+      if(mod.G) files.push(['data/categories.json',genCategories(),'Aggiorna categorie (admin)','G']);
+      if(mod.K) files.push(['data/config.json',genConfig(),'Aggiorna configurazione (admin)','K']);
+      if(mod.T) files.push(['data/texts.json',genTexts(),'Aggiorna testi (admin)','T']);
+      files.forEach(f=>JSON.parse(f[1]));   // validazione vera
+    }catch(e){ return fail('json','JSON non valido: '+e.message) }
+    if(!files.length){ step('json','skip','Nessuna modifica da pubblicare'); ['refs','commit','cache','deploy','live'].forEach(s=>step(s,'skip','')); $('pubLog').textContent='Nessuna modifica in sospeso ✔'; $('pubBtn').disabled=false; return }
+    step('json','ok',files.map(f=>f[0].split('/').pop()).join(', ')+' — sintassi valida');
+
+    /* 5b · file dati presenti sul sito (causa n.1 di "non vedo le modifiche") */
+    step('files','run');
+    const need=['config','texts','social','products','categories','content','version'];
+    const missing=[];
+    for(const f of need){
+      try{ const r=await fetch(BASE+'data/'+f+'.json?t='+Date.now(),{cache:'no-store'}); if(!r.ok) missing.push(f+'.json') }
+      catch(e){ missing.push(f+'.json') }
+    }
+    if(missing.length){
+      step('files','err','Mancano nel repository: <b>'+missing.join(', ')+'</b> — caricali nella cartella <b>'+BASE+'data/</b> (li trovi nello zip). Senza, il sito può ignorare le modifiche.');
+      if(!confirm('Attenzione: nel repository mancano '+missing.join(', ')+'.\nIl sito potrebbe non mostrare le modifiche.\n\nPubblico lo stesso?')){
+        $('pubBtn').disabled=false; $('pubLog').innerHTML='⛔ Pubblicazione annullata — carica prima i file mancanti.'; return;
+      }
+    } else step('files','ok','7 file dati trovati online');
+
+    /* 6 · riferimenti */
+    step('refs','run');
+    const ids=I.P.map(p=>p.id), dupIds=ids.filter((v,i)=>ids.indexOf(v)!==i);
+    if(dupIds.length) return fail('refs','ID prodotto duplicati: '+[...new Set(dupIds)].join(', '));
+    const badCat=I.P.filter(p=>!I.CATS.some(c=>c.id===p.cat));
+    if(badCat.length) return fail('refs','Prodotti con categoria inesistente: '+badCat.map(p=>p.n.it).join(', '));
+    const badSub=I.P.filter(p=>{const c=I.CATS.find(k=>k.id===p.cat);return c&&c.sub&&c.sub.length&&p.sub>=c.sub.length});
+    if(badSub.length) return fail('refs','Prodotti con sottocategoria fuori elenco: '+badSub.map(p=>p.n.it).join(', '));
+    const heroBad=(I.CONFIG.heroFeatured||[]).filter(id=>!ids.includes(+id));
+    if(heroBad.length) return fail('refs','Hero punta a prodotti inesistenti: '+heroBad.join(', '));
+    const noPrice=I.P.filter(p=>!(p.price>0));
+    step('refs','ok',`${ids.length} prodotti, ${I.CATS.length} categorie`+(noPrice.length?` · ⚠ ${noPrice.length} senza prezzo`:'')+' · riferimenti coerenti');
+
+    /* 7 · commit */
+    step('commit','run');
+    let last;
+    for(const [path,content,msg,k] of files){
+      step('commit','run',`carico ${path}…`);
+      try{ last=await ghPut(BASE+path,content,msg); if(k){mod[k]=false;$('mod'+k).textContent=''} }
+      catch(err){ return fail('commit',path+': '+err) }
+    }
+    step('commit','ok',files.length+' file scritti su '+branch);
+
+    /* 8 · cache/versione */
+    step('cache','run');
+    const vNew=genVersion();
+    try{ await ghPut(BASE+'data/version.json',vNew,'Bump versione (cache-busting)') }
+    catch(err){ return fail('cache','version.json: '+err) }
+    step('cache','ok','Nuova versione '+JSON.parse(vNew).v+' — la cache del browser viene ignorata');
+
+    /* 9 · deploy Pages */
+    step('deploy','run','GitHub sta ricostruendo il sito…');
+    let deployed=false;
+    try{
+      for(let i=0;i<10;i++){
+        await new Promise(r=>setTimeout(r,4000));
+        const b=await fetch(`https://api.github.com/repos/${or.o}/${or.r}/pages/builds/latest`,{headers:{Authorization:'Bearer '+tokenVal(),Accept:'application/vnd.github+json'}});
+        if(b.status===403||b.status===404){ step('deploy','skip','Non verificabile: aggiungi il permesso <b>Pages: Read</b> al token (il deploy avviene comunque)'); break }
+        const j=await b.json();
+        if(j.status==='built'){ deployed=true; step('deploy','ok','Deploy completato'+(j.duration?' in '+Math.round(j.duration/1000)+'s':'')); break }
+        if(j.status==='errored'){ return fail('deploy','GitHub Pages ha fallito il build: '+(j.error&&j.error.message||'')) }
+        step('deploy','run','stato: '+(j.status||'in corso')+'…');
+      }
+      if(!deployed && $('st-deploy').className.includes('run')) step('deploy','ok','Avviato — completa entro un minuto');
+    }catch(e){ step('deploy','skip','Non verificabile ('+e+')') }
+
+    /* 10 · sito allineato */
+    step('live','run');
+    try{
+      const v=await (await fetch(BASE+'data/version.json?t='+Date.now(),{cache:'no-store'})).json();
+      const atteso=JSON.parse(vNew).v;
+      if(v.v===atteso) step('live','ok','Il sito serve la versione appena pubblicata ✔');
+      else step('live','ok','Pubblicato: il sito completerà l\'aggiornamento a breve (ricarica tra poco)');
+    }catch(e){ step('live','skip','Verifica non possibile da qui') }
+
+    try{ localStorage.removeItem(DRAFT) }catch(e){}
+    updatePending();
+    $('pubLog').innerHTML='✅ <b>Pubblicazione completata.</b> Apri il sito e ricarica (Ctrl+Shift+R).';
+    toast('Pubblicato con successo 🚀');
+    $('pubBtn').disabled=false;
+  };
+  $('pubBtn').onclick=window.__publishAll;
+
+  /* Anteprima live: index.html reale + dati correnti iniettati */
+  $('prevBtn').onclick=async()=>{
+    try{
+      const res=await fetch(BASE+'index.html'); if(!res.ok) throw 0;
+      let page=await res.text();
+      const baseHref=new URL(BASE||'.',location.href).href;
+      page=page.replace('<head>','<head><base href="'+baseHref+'">');
+      const inject='<script>window.INGLY='+JSON.stringify(I)+';<\/script>';
+      page=page.replace(/<script defer src="data\/[^"]+"><\/script>\s*/g,'');
+      page=page.replace('<script type="module"', inject+'\n<script type="module"');
+      $('prevWrap').style.display='block';
+      $('prevFrame').srcdoc=page;
+      toast('Anteprima aggiornata 👁');
+    }catch(e){ $('prevNote').style.display='block' }
+  };
+}
+/* ===== AUTOSALVATAGGIO (bozza locale, recuperabile) ===== */
+const DRAFT='ingly_draft_v1';
+function saveDraft(){
+  try{ localStorage.setItem(DRAFT, JSON.stringify({t:Date.now(),mod,
+    data:{CONFIG:I.CONFIG,D:I.D,P:I.P,CATS:I.CATS}})) }catch(e){}
+}
+function pending(){ return Object.values(mod).filter(Boolean).length }
+function updatePending(){
+  const n=pending();
+  const sp=$('sidePend'); if(sp) sp.textContent = n? (n+' da pubblicare') : 'Tutto pubblicato ✔';
+  $('pendHint').innerHTML = n
+    ? `<b style="color:var(--laser)">${n} modifica${n>1?'he':''} non pubblicat${n>1?'e':'a'}</b> · premi 🚀 Pubblica (o Ctrl+S)`
+    : 'Tutto pubblicato ✔ · <b>Ctrl+S</b> per pubblicare';
+}
+const _flag=flag;
+flag=function(k){ _flag(k); saveDraft(); updatePending(); };
+window.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){ e.preventDefault(); $('sbPublish').click(); }
+});
+(function restoreDraft(){
+  let d; try{ d=JSON.parse(localStorage.getItem(DRAFT)||'null') }catch(e){}
+  if(!d||!d.data||!Object.values(d.mod||{}).some(Boolean))return;
+  const when=new Date(d.t).toLocaleString();
+  const bar=document.createElement('div');
+  bar.className='note y';
+  bar.innerHTML=`💾 Hai <b>modifiche non pubblicate</b> salvate il ${when}. <button class="btn ok" id="drRestore" style="padding:7px 16px;font-size:13px;margin-left:8px">Riprendi</button> <button class="btn ghost" id="drDrop" style="padding:7px 16px;font-size:13px">Ignora</button>`;
+  document.querySelector('.content').prepend(bar);
+  bar.querySelector('#drRestore').onclick=()=>{
+    Object.assign(I.CONFIG,d.data.CONFIG); Object.assign(I.D,d.data.D);
+    I.P.length=0; d.data.P.forEach(p=>I.P.push(p));
+    I.CATS.length=0; d.data.CATS.forEach(c=>I.CATS.push(c));
+    Object.keys(d.mod).forEach(k=>{ if(d.mod[k]) flag(k) });
+    renderProds(); renderCatsAdmin(); renderHeroAdmin(); renderSerp(); renderFotoGal();
+    bar.remove(); toast('Bozza ripristinata 💾');
+  };
+  bar.querySelector('#drDrop').onclick=()=>{ localStorage.removeItem(DRAFT); bar.remove() };
+})();
+updatePending();
+if(MISSING.length){
+  const warn=document.createElement('div');
+  warn.className='note y';
+  warn.innerHTML='⚠️ <b>Attenzione:</b> nel repository mancano questi file dati: <b>'+MISSING.join(', ')+'</b>. Il sito potrebbe non mostrare le tue modifiche. Caricali nella cartella <b>'+(BASE||'')+'data/</b> (li trovi nello zip del sito).';
+  document.querySelector('.content').prepend(warn);
+}
+
+/* ===== IMPOSTAZIONI ===== */
+function fillSettings(){
+  $('setOwner').value=GH.owner||''; $('setRepo').value=GH.repo||''; $('setBranch').value=GH.branch||'main';
+  const t=$('ghTok')?$('ghTok').value:''; $('setTok').value=t;
+  $('setPaths').innerHTML=
+    '• Dati del sito: <b>'+(BASE||'radice')+'data/</b><br>'+
+    '• Immagini: <b>'+(BASE||'')+'img/</b><br>'+
+    '• Scrittura su: <b>'+(repoBase()||'— non configurato —')+'</b> (branch <b>'+GH.branch+'</b>)';
+}
+function applySettings(){
+  GH.owner=$('setOwner').value.trim().replace(/\/$/,'');
+  GH.repo=$('setRepo').value.trim().replace(/\/$/,'');
+  GH.branch=$('setBranch').value.trim()||'main';
+  // consenti di incollare l'URL intero nel campo owner
+  const m=GH.owner.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+  if(m){ GH.owner=m[1]; GH.repo=GH.repo||m[2]; }
+  if($('ghTok')) $('ghTok').value=$('setTok').value.trim();
+  saveGH(); refreshLinks(); fillSettings();
+}
+$('setSave').onclick=()=>{
+  applySettings();
+  if($('ghTok'))$('ghTok').value=$('setTok').value.trim();
+  try{ $('setRemember').checked?localStorage.setItem('ingly_gh_token',$('setTok').value.trim()):localStorage.removeItem('ingly_gh_token') }catch(e){}
+  $('setOut').innerHTML='💾 Impostazioni salvate.'; toast('Impostazioni salvate');
+};
+$('setTest').onclick=async()=>{
+  applySettings();
+  $('setOut').textContent='Verifico…';
+  const or=ownerRepo();
+  if(!or){ $('setOut').innerHTML='❌ Inserisci owner e repository.'; return }
+  if(!$('setTok').value.trim()){ $('setOut').innerHTML='❌ Inserisci il token.'; return }
+  const H={Authorization:'Bearer '+$('setTok').value.trim(),Accept:'application/vnd.github+json'};
+  const rows=[];
+  try{
+    const r=await fetch(`https://api.github.com/repos/${or.o}/${or.r}`,{headers:H});
+    if(r.status===401){ $('setOut').innerHTML='❌ Token non valido o scaduto.'; return }
+    if(r.status===404){ $('setOut').innerHTML='❌ Il token non vede <b>'+or.o+'/'+or.r+'</b>. Controlla i nomi, oppure rigenera il token selezionando questo repository.'; return }
+    const j=await r.json();
+    rows.push('✅ Repository: '+j.full_name);
+    rows.push((j.permissions&&j.permissions.push)?'✅ Permesso di scrittura (Contents)':'❌ Manca <b>Contents: Read and write</b> nel token');
+    const b=await fetch(`https://api.github.com/repos/${or.o}/${or.r}/branches/${encodeURIComponent(GH.branch)}`,{headers:H});
+    rows.push(b.ok?('✅ Branch <b>'+GH.branch+'</b> esistente'):('❌ Branch <b>'+GH.branch+'</b> inesistente (quello principale è <b>'+(j.default_branch||'main')+'</b>)'));
+    const d=await fetch(`https://api.github.com/repos/${or.o}/${or.r}/contents/${BASE}data/version.json?ref=${encodeURIComponent(GH.branch)}`,{headers:H});
+    rows.push(d.ok?'✅ Cartella dati trovata in <b>'+(BASE||'')+'data/</b>':'⚠ <b>'+(BASE||'')+'data/version.json</b> non trovato su questo branch');
+  }catch(e){ rows.push('❌ Rete: '+e) }
+  $('setOut').innerHTML=rows.join('<br>');
+};
+fillSettings();
+
+initPublish();
+$('sidePublish').onclick=()=>$('sbPublish').click();
+$('sbPublish').onclick=()=>{
+  if(!tokenVal()){
+    document.querySelector('[data-p="pubblica"]').click();
+    $('ghTok').focus();
+    toast('Inserisci il token qui, poi 🚀 Pubblica: mai più caricamenti a mano');
+    return;
+  }
+  window.__publishAll();
+};
+$('ghVerify').onclick=async()=>{
+  $('ghVerifyOut').textContent='Verifico…';
+  try{ const r=await verifyLink(); $('ghVerifyOut').textContent=r.msg; $('ghVerifyOut').style.color=r.ok?'var(--ok)':'var(--warn)'; if(!r.ok)logErr(r.msg); }
+  catch(e){ $('ghVerifyOut').textContent='Errore di rete: '+e }
+};
+window.__ingly_admin={genProducts,genCategories,genConfig,genTexts,genContent,genVersion};
+} /* fine initAdmin */
+</script>
+</body>
+</html>

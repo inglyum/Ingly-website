@@ -1,0 +1,664 @@
+{
+ "MAT_ART": {
+  "Legno": {
+   "bg": "linear-gradient(140deg,#e8d5b0,#c9a876)",
+   "sw": "#c9a876"
+  },
+  "Plexiglass": {
+   "bg": "linear-gradient(140deg,#dbe9ff,#aac6f5)",
+   "sw": "#aac6f5"
+  },
+  "Metallo": {
+   "bg": "linear-gradient(140deg,#4a4a55,#23232c)",
+   "sw": "#3a3a44"
+  },
+  "Pelle": {
+   "bg": "linear-gradient(140deg,#b9825a,#8a5a38)",
+   "sw": "#9a6a45"
+  },
+  "Vetro": {
+   "bg": "linear-gradient(140deg,#eef7f7,#cfe6e8)",
+   "sw": "#cfe6e8"
+  },
+  "Bamboo": {
+   "bg": "linear-gradient(140deg,#e9dfc0,#cdbd8a)",
+   "sw": "#cdbd8a"
+  },
+  "MDF": {
+   "bg": "linear-gradient(140deg,#d9c9b2,#b8a284)",
+   "sw": "#b8a284"
+  },
+  "PLA": {
+   "bg": "linear-gradient(140deg,#eefaf1,#bfe8cd)",
+   "sw": "#bfe8cd"
+  },
+  "File": {
+   "bg": "linear-gradient(140deg,#f4f0ff,#d9ccf5)",
+   "sw": "#d9ccf5"
+  }
+ },
+ "MATN": {
+  "Legno": {
+   "it": "Legno",
+   "en": "Wood"
+  },
+  "Plexiglass": {
+   "it": "Plexiglass",
+   "en": "Plexiglass"
+  },
+  "Metallo": {
+   "it": "Metallo",
+   "en": "Metal"
+  },
+  "Pelle": {
+   "it": "Pelle",
+   "en": "Leather"
+  },
+  "Vetro": {
+   "it": "Vetro",
+   "en": "Glass"
+  },
+  "Bamboo": {
+   "it": "Bamboo",
+   "en": "Bamboo"
+  },
+  "MDF": {
+   "it": "MDF",
+   "en": "MDF"
+  },
+  "PLA": {
+   "it": "PLA/PETG",
+   "en": "PLA/PETG"
+  },
+  "File": {
+   "it": "File digitale",
+   "en": "Digital file"
+  }
+ },
+ "DIG": [
+  {
+   "id": 101,
+   "n": {
+    "it": "Bundle 50 File SVG — Casa",
+    "en": "50 SVG Bundle — Home"
+   },
+   "f": [
+    "SVG",
+    "PDF"
+   ],
+   "price": 19,
+   "icon": "🏠"
+  },
+  {
+   "id": 102,
+   "n": {
+    "it": "Template Targhe DXF ×30",
+    "en": "Plaque Templates DXF ×30"
+   },
+   "f": [
+    "DXF",
+    "SVG"
+   ],
+   "price": 24,
+   "icon": "🪧"
+  },
+  {
+   "id": 103,
+   "n": {
+    "it": "File 3D STL — Decor Pack",
+    "en": "3D STL Files — Decor Pack"
+   },
+   "f": [
+    "STL"
+   ],
+   "price": 29,
+   "icon": "🧊"
+  },
+  {
+   "id": 104,
+   "n": {
+    "it": "Template Segnaposto Nozze",
+    "en": "Wedding Place Card Templates"
+   },
+   "f": [
+    "SVG",
+    "DXF",
+    "AI"
+   ],
+   "price": 15,
+   "icon": "💍"
+  },
+  {
+   "id": 105,
+   "n": {
+    "it": "Progetto Laser Premium — Lampada",
+    "en": "Premium Laser Project — Lamp"
+   },
+   "f": [
+    "SVG",
+    "DXF",
+    "LBRN"
+   ],
+   "price": 39,
+   "icon": "💡"
+  },
+  {
+   "id": 106,
+   "n": {
+    "it": "Bundle Makers CO₂/F2/MOPA",
+    "en": "Makers Bundle CO₂/F2/MOPA"
+   },
+   "f": [
+    "SVG",
+    "DXF",
+    "STL",
+    "LBRN"
+   ],
+   "price": 59,
+   "icon": "🧰"
+  }
+ ],
+ "TECH": [
+  {
+   "t": "CO₂ · 100W",
+   "n": "Laser CO₂",
+   "d": {
+    "it": "Legno, plexiglass, pelle, vetro e MDF. Taglia fino a 20 mm, incide dettagli fotografici.",
+    "en": "Wood, plexiglass, leather, glass and MDF. Cuts up to 20 mm, engraves photographic detail."
+   },
+   "s": [
+    "1300×900 mm",
+    "0,025 mm"
+   ],
+   "lg": 1
+  },
+  {
+   "t": "Fiber · F2",
+   "n": "Fiber Laser F2",
+   "d": {
+    "it": "Marcatura permanente e tattile su acciaio, alluminio, titanio e ottone.",
+    "en": "Permanent, tactile marking on steel, aluminium, titanium and brass."
+   },
+   "s": [
+    "Deep engraving",
+    "Traceability"
+   ],
+   "lg": 1
+  },
+  {
+   "t": "MOPA",
+   "n": "Laser MOPA",
+   "d": {
+    "it": "Marcature a colori su acciaio e anodizzato, massimo controllo dell’impulso.",
+    "en": "Color marking on steel and anodized surfaces, full pulse control."
+   },
+   "s": [
+    "Color marking"
+   ]
+  },
+  {
+   "t": "DTF · Textile",
+   "n": "Stampa DTF",
+   "d": {
+    "it": "Transfer vividi e resistenti per abbigliamento, da 1 pezzo alle divise complete.",
+    "en": "Vivid, durable transfers for apparel, from 1 piece to full uniform runs."
+   },
+   "s": [
+    "Ogni tessuto"
+   ]
+  },
+  {
+   "t": "UV · Flatbed",
+   "n": "Stampa UV",
+   "d": {
+    "it": "Stampa full color con bianco e lucido, direttamente su quasi ogni oggetto.",
+    "en": "Full-color print with white & gloss layers, directly on almost any object."
+   },
+   "s": [
+    "2880 dpi"
+   ]
+  },
+  {
+   "t": "FDM / Resina",
+   "n": "Stampa 3D",
+   "d": {
+    "it": "Prototipi, nomi 3D e oggetti di design in PLA/PETG, rifiniti a mano.",
+    "en": "Prototypes, 3D names and design objects in PLA/PETG, hand finished."
+   },
+   "s": [
+    "0,05 mm layer"
+   ]
+  }
+ ],
+ "MATERIALS": [
+  [
+   "Legno",
+   "Wood",
+   "#e8d5b0,#c9a876",
+   {
+    "it": "Rovere, noce, faggio",
+    "en": "Oak, walnut, beech"
+   }
+  ],
+  [
+   "Plexiglass",
+   "Plexiglass",
+   "#dbe9ff,#aac6f5",
+   {
+    "it": "Colato, colorato, specchiato",
+    "en": "Cast, colored, mirrored"
+   }
+  ],
+  [
+   "Metallo",
+   "Metal",
+   "#4a4a55,#23232c",
+   {
+    "it": "Acciaio, alluminio, titanio",
+    "en": "Steel, aluminium, titanium"
+   }
+  ],
+  [
+   "Pelle",
+   "Leather",
+   "#b9825a,#8a5a38",
+   {
+    "it": "Vera pelle e similpelle",
+    "en": "Genuine & vegan leather"
+   }
+  ],
+  [
+   "Vetro",
+   "Glass",
+   "#eef7f7,#cfe6e8",
+   {
+    "it": "Bicchieri, bottiglie, lastre",
+    "en": "Glasses, bottles, sheets"
+   }
+  ],
+  [
+   "Bamboo",
+   "Bamboo",
+   "#e9dfc0,#cdbd8a",
+   {
+    "it": "Ecologico e resistente",
+    "en": "Eco-friendly & durable"
+   }
+  ],
+  [
+   "MDF",
+   "MDF",
+   "#d9c9b2,#b8a284",
+   {
+    "it": "Ideale per taglio e verniciatura",
+    "en": "Ideal for cutting & painting"
+   }
+  ],
+  [
+   "PLA/PETG",
+   "PLA/PETG",
+   "#eefaf1,#bfe8cd",
+   {
+    "it": "Stampa 3D, mille colori",
+    "en": "3D printing, endless colors"
+   }
+  ]
+ ],
+ "STEPS": [
+  {
+   "it": [
+    "Progetto",
+    "Invia la tua idea, logo o foto — o costruiscila nel configuratore. Prepariamo il file per il raggio."
+   ],
+   "en": [
+    "Design",
+    "Send your idea, logo or photo — or build it in the customizer. We prep the file for the beam."
+   ]
+  },
+  {
+   "it": [
+    "Materiale",
+    "Scegli tra otto materiali certificati, controllati pezzo per pezzo."
+   ],
+   "en": [
+    "Material",
+    "Choose from eight certified materials, checked piece by piece."
+   ]
+  },
+  {
+   "it": [
+    "Laser & stampa",
+    "CO₂, F2, MOPA, UV o DTF — la tecnologia giusta per la tua superficie."
+   ],
+   "en": [
+    "Laser & print",
+    "CO₂, F2, MOPA, UV or DTF — the right technology for your surface."
+   ]
+  },
+  {
+   "it": [
+    "Finitura & spedizione",
+    "Rifinito a mano, controllato e spedito. La maggior parte parte entro 3 giorni."
+   ],
+   "en": [
+    "Finish & ship",
+    "Hand finished, quality checked and shipped. Most pieces ship within 3 days."
+   ]
+  }
+ ],
+ "REVIEWS": [
+  {
+   "q": {
+    "it": "\"60 taglieri incisi per le aperture dei nostri ristoranti. Precisione irreale — ogni logo identico, consegna in anticipo.\"",
+    "en": "\"60 engraved boards for our restaurant openings. Unreal precision — every logo identical, delivered early.\""
+   },
+   "w": "Marco R.",
+   "s": {
+    "it": "Gruppo ristorazione · Bologna",
+    "en": "Restaurant group · Bologna"
+   },
+   "c": "var(--blue)",
+   "i": "MR"
+  },
+  {
+   "q": {
+    "it": "\"Le bomboniere hanno fatto piangere mezza sala. I cuori in ardesia con la nostra data erano oltre ogni aspettativa.\"",
+    "en": "\"The favors made half the room cry. The slate hearts with our date were beyond expectations.\""
+   },
+   "w": "Giulia C.",
+   "s": {
+    "it": "Matrimonio · Rimini",
+    "en": "Wedding · Rimini"
+   },
+   "c": "#8f6ad1",
+   "i": "GC"
+  },
+  {
+   "q": {
+    "it": "\"500 card in acciaio marcate F2 per il team vendite. La finitura tattile ferma le persone. Ora cliente fisso.\"",
+    "en": "\"500 F2-marked steel cards for our sales team. The tactile finish stops people. Repeat client now.\""
+   },
+   "w": "Luca T.",
+   "s": {
+    "it": "Azienda tech · Milano",
+    "en": "Tech company · Milano"
+   },
+   "c": "#2c8a5b",
+   "i": "LT"
+  }
+ ],
+ "BIZ": [
+  [
+   "🏷️",
+   {
+    "it": "Targhe professionali",
+    "en": "Professional plaques"
+   },
+   {
+    "it": "Studi, uffici e attività: targhe in plexi, legno e metallo con posa inclusa.",
+    "en": "Offices and businesses: plexi, wood and metal plaques."
+   }
+  ],
+  [
+   "🎁",
+   {
+    "it": "Gadget aziendali",
+    "en": "Corporate gadgets"
+   },
+   {
+    "it": "Penne, borracce, portachiavi e kit onboarding con il tuo logo.",
+    "en": "Pens, bottles, keychains and onboarding kits with your logo."
+   }
+  ],
+  [
+   "📱",
+   {
+    "it": "QR menu & branding",
+    "en": "QR menus & branding"
+   },
+   {
+    "it": "Menu QR in plexi/legno e branding coordinato per locali.",
+    "en": "Plexi/wood QR menus and coordinated branding."
+   }
+  ],
+  [
+   "🏭",
+   {
+    "it": "Produzione conto terzi",
+    "en": "Third-party production"
+   },
+   {
+    "it": "La tua produzione sui nostri laser: capacità, qualità, riservatezza.",
+    "en": "Your production on our lasers: capacity, quality, confidentiality."
+   }
+  ],
+  [
+   "⚙️",
+   {
+    "it": "Incisioni industriali",
+    "en": "Industrial engraving"
+   },
+   {
+    "it": "Marcature tecniche, serial, QR e tracciabilità su metallo.",
+    "en": "Technical marking, serials, QR and traceability on metal."
+   }
+  ],
+  [
+   "🧪",
+   {
+    "it": "Prototipazione laser",
+    "en": "Laser prototyping"
+   },
+   {
+    "it": "Dal file al prototipo in 48h, iterazioni rapide.",
+    "en": "From file to prototype in 48h, fast iterations."
+   }
+  ]
+ ],
+ "FAQS": [
+  [
+   {
+    "it": "Quanto dura la produzione?",
+    "en": "How long does production take?"
+   },
+   {
+    "it": "La maggior parte dei pezzi personalizzati viene incisa e spedita entro 3 giorni lavorativi. Gli ordini B2B ricevono un piano di produzione con date garantite.",
+    "en": "Most personalized pieces are engraved and shipped within 3 working days. B2B orders get a production plan with guaranteed dates."
+   }
+  ],
+  [
+   {
+    "it": "Posso caricare il mio logo o una foto?",
+    "en": "Can I upload my own logo or photo?"
+   },
+   {
+    "it": "Sì — SVG, PDF, AI, PNG o JPG. Ottimizziamo ogni file per il materiale scelto e inviamo una prova grafica prima di incidere.",
+    "en": "Yes — SVG, PDF, AI, PNG or JPG. We optimize every file and send a digital proof before engraving."
+   }
+  ],
+  [
+   {
+    "it": "Quali materiali lavorate?",
+    "en": "Which materials do you work with?"
+   },
+   {
+    "it": "Legno, plexiglass, metallo (acciaio, alluminio, titanio), pelle, vetro, bamboo, MDF e PLA/PETG per il 3D.",
+    "en": "Wood, plexiglass, metal (steel, aluminium, titanium), leather, glass, bamboo, MDF and PLA/PETG for 3D."
+   }
+  ],
+  [
+   {
+    "it": "Incidete oggetti portati da me?",
+    "en": "Do you engrave my own objects?"
+   },
+   {
+    "it": "Sì, è il nostro servizio Custom su Richiesta: portaci l’oggetto (o spediscilo) e lo personalizziamo dopo un test di compatibilità.",
+    "en": "Yes — our Custom on Request service: bring or ship your object and we personalize it after a compatibility test."
+   }
+  ],
+  [
+   {
+    "it": "Gestite ordini aziendali e bulk?",
+    "en": "Do you handle corporate and bulk orders?"
+   },
+   {
+    "it": "Da 50 a 50.000 pezzi, con prezzi a quantità, setup logo incluso e referente dedicato.",
+    "en": "From 50 to 50,000 pieces, with quantity pricing, free logo setup and a dedicated contact."
+   }
+  ],
+  [
+   {
+    "it": "Come funzionano i file digitali?",
+    "en": "How do digital files work?"
+   },
+   {
+    "it": "Download istantaneo dopo l’acquisto, licenza commerciale inclusa. Formati per CO₂, F2, MOPA e stampa 3D.",
+    "en": "Instant download after purchase, commercial license included. Formats for CO₂, F2, MOPA and 3D printing."
+   }
+  ],
+  [
+   {
+    "it": "Spedite fuori dall’Italia?",
+    "en": "Do you ship outside Italy?"
+   },
+   {
+    "it": "In tutta la UE in 2–5 giorni lavorativi con corriere tracciato. Extra-UE su richiesta per ordini business.",
+    "en": "Across the EU in 2–5 working days, tracked. Worldwide on request for business orders."
+   }
+  ]
+ ],
+ "PORT": [
+  [
+   "🪵",
+   {
+    "it": "Menu board in rovere",
+    "en": "Oak menu boards"
+   },
+   "#e8d5b0,#c9a876"
+  ],
+  [
+   "🏆",
+   {
+    "it": "Premio in vetro — Nova Tech",
+    "en": "Glass award — Nova Tech"
+   },
+   "#eef7f7,#cfe6e8"
+  ],
+  [
+   "💍",
+   {
+    "it": "Allestimento nozze",
+    "en": "Wedding signage"
+   },
+   "#f4f0ff,#d9ccf5"
+  ],
+  [
+   "🐾",
+   {
+    "it": "Medagliette in acciaio",
+    "en": "Steel pet tags"
+   },
+   "#4a4a55,#23232c"
+  ],
+  [
+   "💡",
+   {
+    "it": "Plexi retroilluminato",
+    "en": "Edge-lit acrylic"
+   },
+   "#dbe9ff,#aac6f5"
+  ],
+  [
+   "🎂",
+   {
+    "it": "Cake topper su misura",
+    "en": "Custom cake toppers"
+   },
+   "#fdf1f3,#f5c8d2"
+  ],
+  [
+   "🔑",
+   {
+    "it": "Portachiavi in pelle",
+    "en": "Leather keychains"
+   },
+   "#b9825a,#8a5a38"
+  ],
+  [
+   "🎄",
+   {
+    "it": "Run natalizia ×400",
+    "en": "Christmas run ×400"
+   },
+   "#fdeaea,#f0bcbc"
+  ],
+  [
+   "⚙️",
+   {
+    "it": "Marcatura industriale F2",
+    "en": "F2 industrial marking"
+   },
+   "#33313f,#211f2e"
+  ],
+  [
+   "👶",
+   {
+    "it": "Targhe nascita",
+    "en": "Birth plaques"
+   },
+   "#eefaf1,#bfe8cd"
+  ],
+  [
+   "🎓",
+   {
+    "it": "Targhe laurea",
+    "en": "Graduation plaques"
+   },
+   "#fff8e0,#f8e69a"
+  ],
+  [
+   "🌙",
+   {
+    "it": "Lampade 3D",
+    "en": "3D lamps"
+   },
+   "#f4f0ff,#e3daf8"
+  ]
+ ],
+ "FONTS": [
+  {
+   "n": "Grotesk",
+   "css": "'Space Grotesk',sans-serif"
+  },
+  {
+   "n": "Script",
+   "css": "'Caveat',cursive"
+  },
+  {
+   "n": "Serif",
+   "css": "'Playfair Display',serif"
+  }
+ ],
+ "MOPT": [
+  {
+   "k": "Legno",
+   "mod": 0
+  },
+  {
+   "k": "Plexiglass",
+   "mod": 4
+  },
+  {
+   "k": "Bamboo",
+   "mod": 3
+  },
+  {
+   "k": "Pelle",
+   "mod": 5
+  },
+  {
+   "k": "Metallo",
+   "mod": 9
+  }
+ ]
+}

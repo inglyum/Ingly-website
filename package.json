@@ -1,0 +1,13 @@
+{
+  "name": "ingly-design-website",
+  "private": true,
+  "type": "module",
+  "description": "INGLY DESIGN \u2014 premium custom creations (static site)",
+  "scripts": {
+    "serve": "npx serve .",
+    "build": "node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.1"
+  }
+}
