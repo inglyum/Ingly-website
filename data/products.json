@@ -4,11 +4,11 @@
   "cat": "limited",
   "sub": 0,
   "n": {
-   "it": "Huntix Nome Personalizzato",
+   "it": "Insegna  con nome Personalizzato Huntrix  Rumi",
    "en": "Custom House Plaque"
   },
   "mat": "Legno",
-  "price": 34,
+  "price": 39.99,
   "icon": "🪧",
   "rev": 67,
   "coll": [
@@ -16,31 +16,32 @@
   ],
   "tag": "Best",
   "prod": 3,
-  "slug": "huntix-nome-personalizzato"
+  "slug": "insegna-con-nome-personalizzato-huntrix-rumi"
  },
  {
   "id": 2,
   "cat": "casa",
-  "sub": 0,
+  "sub": 3,
   "n": {
-   "it": "Decorazione Nome Plexi",
+   "it": "Lampada da Parete Artigianale \"Luna\" 3D con Modulo Lunare",
    "en": "Plexi Name Decor"
   },
-  "mat": "Plexiglass",
-  "price": 24,
+  "mat": "PLA",
+  "price": 79.99,
   "icon": "🔤",
   "rev": 104,
   "coll": [
    "best"
   ],
-  "prod": 3
+  "prod": 7,
+  "slug": "lampada-da-parete-artigianale-luna-3d-con-modulo-lunare"
  },
  {
   "id": 3,
   "cat": "casa",
   "sub": 2,
   "n": {
-   "it": "Quadro Inciso — Ritratto",
+   "it": "Quadro Inciso — Ritratto da foto ",
    "en": "Engraved Portrait Art"
   },
   "mat": "Legno",
@@ -48,18 +49,19 @@
   "icon": "🖼️",
   "rev": 141,
   "coll": [],
-  "prod": 5
+  "prod": 5,
+  "slug": "quadro-inciso-ritratto-da-foto"
  },
  {
   "id": 4,
   "cat": "casa",
-  "sub": 3,
+  "sub": 4,
   "n": {
-   "it": "Lampada LED Personalizzata",
+   "it": "Logo in legno Squadra Personalizzato",
    "en": "Custom LED Lamp"
   },
-  "mat": "Plexiglass",
-  "price": 49,
+  "mat": "Legno",
+  "price": 29.99,
   "icon": "💡",
   "rev": 178,
   "coll": [
@@ -67,57 +69,61 @@
    "new"
   ],
   "tag": "New",
-  "prod": 3
+  "prod": 3,
+  "slug": "logo-in-legno-squadra-personalizzato"
  },
  {
   "id": 5,
   "cat": "casa",
   "sub": 4,
   "n": {
-   "it": "Segnaletica Interna Set",
+   "it": "Nuvola e nome personalizzato\" – Decorazione da Parete per Cameretta (35 cm)",
    "en": "Interior Signage Set"
   },
-  "mat": "Plexiglass",
-  "price": 29,
+  "mat": "Legno",
+  "price": 34.99,
   "icon": "🚪",
   "rev": 215,
   "coll": [],
-  "prod": 3
+  "prod": 3,
+  "slug": "nuvola-e-nome-personalizzato-decorazione-da-parete-per-cameretta-35-cm"
  },
  {
   "id": 6,
   "cat": "casa",
   "sub": 5,
   "n": {
-   "it": "Decorazione 3D Stampata",
+   "it": "",
    "en": "3D Printed Decor"
   },
   "mat": "PLA",
-  "price": 27,
+  "price": 14.99,
   "icon": "🧊",
   "rev": 252,
   "coll": [
    "new"
   ],
-  "prod": 3
+  "prod": 3,
+  "slug": ""
  },
  {
   "id": 7,
   "cat": "eventi",
   "sub": 1,
   "n": {
-   "it": "Cake Topper Plexi",
+   "it": "\"Super Eroi\" – Arte Multilivello in Legno (Serie Chibi 25-30 cm)",
    "en": "Plexi Cake Topper"
   },
   "mat": "Plexiglass",
-  "price": 16,
+  "price": 29.99,
   "icon": "🎂",
   "rev": 289,
   "coll": [
    "best"
   ],
   "tag": "Best",
-  "prod": 3
+  "prod": 3,
+  "slug": "super-eroi-arte-multilivello-in-legno-serie-chibi-25-30-cm"
  },
  {
   "id": 8,
